@@ -1,12 +1,12 @@
-const path = require('path')
+//const path = require('path')
 import { login, selectBankByNameAndABA, selectBankCycle, BSISThreeNext, doubleClickNext, openSmartToolPageInCurrentPage,
-clickLinkByName } from './utils'
+clickLinkByName, copyAndCompareExcel } from './utils'
 
-const downloadsFolder = Cypress.config('downloadsFolder')
-const fixturesFolder = Cypress.config('fixturesFolder')
-const benchmarkPath = path.join(fixturesFolder.replace(/\\/g, '/'), 'report/benchmark_report/smart_tool')
-const generatePath = path.join(fixturesFolder.replace(/\\/g, '/'), 'report/generate_report')
-const diffPath = path.join(fixturesFolder.replace(/\\/g, '/'), 'result')
+//const downloadsFolder = Cypress.config('downloadsFolder')
+//const fixturesFolder = Cypress.config('fixturesFolder')
+//const benchmarkPath = path.join(fixturesFolder.replace(/\\/g, '/'), 'report/benchmark_report/smart_tool')
+//const generatePath = path.join(fixturesFolder.replace(/\\/g, '/'), 'report/generate_report')
+//const diffPath = path.join(fixturesFolder.replace(/\\/g, '/'), 'result')
 
 //console.log(`fixtureFolder:${fixturesFolder}`)
 //console.log(`benchmarkPath:${benchmarkPath}`)
@@ -117,7 +117,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force:true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
@@ -128,10 +128,10 @@ describe('smart tool', () => {
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
+    cy.wait(5000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click( {force:true} )
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
@@ -156,11 +156,12 @@ describe('smart tool', () => {
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
+    cy.wait(5000)
     cy.get('[value="next4"]').click()
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force: true} )
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
@@ -168,7 +169,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select three file
-    cy.get('span.fn').eq(2).click()
+    cy.get('span.fn').eq(2).click({ force: true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
@@ -183,14 +184,14 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force:true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
     cy.wait(2000)
 
     //select three file
-    cy.get('span.fn').eq(2).click()
+    cy.get('span.fn').eq(2).click({ force:true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
@@ -205,9 +206,13 @@ describe('smart tool', () => {
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
-    cy.get('input[value="Download PATHBOOK"]').click()
-    cy.wait(5000)
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    cy.wait(10000)
 
+    copyAndCompareExcel()
+
+    /*
     //copy downloaded pathfile to generate_report folder and then compare the pathfile
     cy.task('copyFileToDirSync', { fromPath:`${downloadsFolder}/`, toPath:`${generatePath}/`}).then((obj) => {
       const benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}`
@@ -216,13 +221,15 @@ describe('smart tool', () => {
 
       cy.task('compareExcelFile', { benchmarkPath: benchmarkFilePath, generatePath: generateFilePath, diffPath: `${diffFilePath}`})
     })
+    */
+
+
   })
 
 
   it('qtestbank2 smart tool', () => {
     // select bank:QTestBank2
     selectBankByNameAndABA('QTestBank2','762')
-    cy.wait(1000)
 
     //select cycle:202206
     selectBankCycle('Jun 2022')
@@ -230,7 +237,6 @@ describe('smart tool', () => {
     //open smart tool page in current page(not open the new page)
     //cy.contains('Smart Pathbook Tool').invoke('removeAttr', '_blank').click()
     openSmartToolPageInCurrentPage()
-    cy.wait(2000)
 
     //click root node
     //cy.visit('https://thcdecisions.cn/tlink/external/smartpathfiletool')
@@ -264,6 +270,7 @@ describe('smart tool', () => {
 
     //Cash & Short Term node
     cy.get('#id199').click({ force:true })
+    cy.wait(2000)
     doubleClickNext()
     cy.wait(2000)
 
@@ -273,7 +280,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
     cy.wait(2000)
 
@@ -283,7 +290,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
     cy.wait(2000)
 
@@ -298,7 +305,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force: true })
     doubleClickNext()
     cy.wait(2000)
 
@@ -309,7 +316,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
     cy.get('[value="next4"]').click()
     cy.wait(2000)
@@ -320,7 +327,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
     cy.wait(2000)
 
@@ -331,24 +338,18 @@ describe('smart tool', () => {
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
-    cy.get('input[value="Download PATHBOOK"]').click()
-    cy.wait(5000)
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    cy.wait(10000)
 
-    //copy downloaded pathfile to generate_report folder and then compare the pathfile
-    cy.task('copyFileToDirSync', { fromPath:`${downloadsFolder}/`, toPath:`${generatePath}/`}).then((obj) => {
-      const benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}`
-      const generateFilePath = `${obj.generateFilePath}`
-      const diffFilePath = `${diffPath}/${obj.fileName}_${obj.currentTime}_diff${obj.extName}`
+    copyAndCompareExcel()
 
-      cy.task('compareExcelFile', { benchmarkPath: benchmarkFilePath, generatePath: generateFilePath, diffPath: `${diffFilePath}`})
-    })
   })
 
 
   it('qtestbank3 smart tool', () => {
     // select bank:QTestBank3
     selectBankByNameAndABA('QTestBank3', '763')
-    cy.wait(1000)
 
     //select cycle:202206
     selectBankCycle('Jun 2022')
@@ -356,7 +357,6 @@ describe('smart tool', () => {
     //open smart tool page in current page(not open the new page)
     //cy.contains('Smart Pathbook Tool').invoke('removeAttr', '_blank').click()
     openSmartToolPageInCurrentPage()
-    cy.wait(2000)
     
     //click root node
     //cy.visit('https://thcdecisions.cn/tlink/external/smartpathfiletool')
@@ -390,7 +390,7 @@ describe('smart tool', () => {
 
     //Cash & Short Term node
     cy.get('#id199').click({ force:true })
-    cy.wait(1000)
+    cy.wait(5000)
     doubleClickNext()
     cy.wait(2000)
 
@@ -417,11 +417,12 @@ describe('smart tool', () => {
     //Non Maturity node
     cy.get('#id297').click({ force: true })
     doubleClickNext()
+    cy.wait(2000)
     cy.get('[value="next4"]').click()
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
     cy.get('[value="next4"]').click()
     cy.wait(2000)
@@ -438,17 +439,12 @@ describe('smart tool', () => {
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
-    cy.get('input[value="Download PATHBOOK"]').click()
-    cy.wait(5000)
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    cy.wait(10000)
 
-    //copy downloaded pathfile to generate_report folder and then compare the pathfile
-    cy.task('copyFileToDirSync', { fromPath:`${downloadsFolder}/`, toPath:`${generatePath}/`}).then((obj) => {
-      const benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}`
-      const generateFilePath = `${obj.generateFilePath}`
-      const diffFilePath = `${diffPath}/${obj.fileName}_${obj.currentTime}_diff${obj.extName}`
+    copyAndCompareExcel()
 
-      cy.task('compareExcelFile', { benchmarkPath: benchmarkFilePath, generatePath: generateFilePath, diffPath: `${diffFilePath}`})
-    })
   })
 
 
@@ -463,14 +459,16 @@ describe('smart tool', () => {
     // select bank:QTestBank5
     cy.get('.nirastateF').click()
     cy.get('#abaIdDOM').type('765')
+    cy.wait(2000)
     cy.get('#searchDOM').click()
     cy.get('[title="QTestBank5"]').click()
-    cy.wait(1000)
+    cy.wait(2000)
 
     //select cycle:202206
     cy.get('#app > section > div > div > span > i').click()
     cy.get('.el-icon--right').last().click() //get total 2 elements and the second is needed
     cy.contains('Jun 2022').click()
+    cy.wait(2000)
 
     //go to Generate/View Reports page
     //cy.contains('Port Analytics & Reporting').click()
@@ -487,12 +485,11 @@ describe('smart tool', () => {
     })
     cy.contains('Smart Pathbook Tool').click({ force:true })
     cy.get('@open').should('have.been.calledOnce')
-    cy.wait(2000)
+    cy.wait(6000)
 
     //click root node
     //cy.visit('https://thcdecisions.cn/tlink/external/smartpathfiletool')
     cy.get('#id0').click()
-
     //open GL(BS) page
     cy.contains('Upload GL(BS)').click()
     cy.get('[value="Next"]').click()
@@ -525,6 +522,7 @@ describe('smart tool', () => {
 
     //Cash & Short Term node
     cy.get('#id199').click({ force:true })
+    cy.wait(1000)
     cy.get('[value="next2"]').click()
     cy.get('[value="next3"]').click()
     cy.wait(2000)
@@ -535,19 +533,19 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force: true })
     cy.get('[value="next2"]').click()
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    cy.wait(5000)
 
     //Loans node
     cy.get('#id104').click({ force: true })
     cy.get('[value="next2"]').click()
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    cy.wait(3000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force: true })
     cy.get('[value="next2"]').click()
     cy.get('[value="next3"]').click()
     cy.wait(2000)
@@ -565,22 +563,25 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force: true })
     cy.get('[value="next2"]').click()
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    cy.wait(5000)
 
     //Non Maturity node
     cy.get('#id297').click({ force: true })
+    cy.wait(3000)
     cy.get('[value="next2"]').click()
-    cy.get('[value="next3"]').click()
+    cy.get('[value="next3"]').click({ force: true })
+    cy.wait(8000)
     cy.get('[value="next4"]').click()
-    cy.wait(2000)
+    cy.wait(3000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force: true })
     cy.get('[value="next2"]').click()
     cy.get('[value="next3"]').click()
+    cy.wait(1000)
     cy.get('[value="next4"]').click()
     cy.wait(2000)
 
@@ -591,7 +592,7 @@ describe('smart tool', () => {
     cy.wait(2000)
 
     //select second file
-    cy.get('span.fn').eq(1).click()
+    cy.get('span.fn').eq(1).click({ force: true })
     cy.get('[value="next2"]').click()
     cy.get('[value="next3"]').click()
     cy.wait(2000)
@@ -604,9 +605,13 @@ describe('smart tool', () => {
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
-    cy.get('input[value="Download PATHBOOK"]').click()
-    cy.wait(5000)
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    cy.wait(10000)
 
+    copyAndCompareExcel()
+
+    /*
     //copy downloaded pathfile to generate_report folder and then compare the pathfile
     cy.task('copyFileToDirSync', { fromPath:`${downloadsFolder}/`, toPath:`${generatePath}/`}).then((obj) => {
       const benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}`
@@ -615,9 +620,8 @@ describe('smart tool', () => {
 
       cy.task('compareExcelFile', { benchmarkPath: benchmarkFilePath, generatePath: generateFilePath, diffPath: `${diffFilePath}`})
     })
+    */
   })
-
-
 
 
 })

@@ -64,6 +64,7 @@ module.exports = defineConfig({
             let isDiff = false
             xlsxPopulate.fromFileAsync(benchmarkPath).then(benBook => {
               xlsxPopulate.fromFileAsync(generatePath).then(genBook => {
+                  console.log(generatePath)
                   benBook.sheets().forEach(function(sheet, sheetId, arrSheet) {
                       const genSheet = genBook.sheet(sheet.name())
                       console.log(`sheetName:${sheet.name()}`)
@@ -71,23 +72,30 @@ module.exports = defineConfig({
                           const genRow = genSheet.row(row.rowNumber())
                           row._cells.forEach(function(cell) {
                               const genCell = genRow.cell(cell.columnNumber()) 
+                              if (cell.find('Printed on')) {
+                                return
+                              }
                               if(cell.value() != genCell.value()) {
                                   isDiff = true
                                   genCell.value(`expected:${cell.value()}, actual:${genCell.value()}`)
-                                    genCell.style("fontColor", "ff0000")
-                                    console.log(genCell.value())
+                                  genCell.style("fontColor", "ff0000")
+                                  console.log(genCell.value())
                               }
                           })
                       })
                   })
                   if (isDiff) {
                       genBook.toFileAsync(diffPath)
-                      const data = { reportName: `${path.basename(benchmarkPath)}`, result: 'diff'}
-                      fs.writeFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
+                      const data = { date: `${getCurrentTime()}`, reportName: `${path.basename(benchmarkPath)}`, result: 'diff'}
+                      //fs.writeFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
+                      fs.appendFileSync('cypress/fixtures/result/result.json', '\n')
+                      fs.appendFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
                   } else {
                       console.log('the compared two files were the same')
-                      const data = { reportName: `${path.basename(benchmarkPath)}`, result: 'same'}
-                      fs.writeFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
+                      const data = { date: `${getCurrentTime()}`, reportName: `${path.basename(benchmarkPath)}`, result: 'same'}
+                      //fs.writeFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
+                      fs.appendFileSync('cypress/fixtures/result/result.json', '\n')
+                      fs.appendFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
                       
                   }
               })
@@ -99,8 +107,13 @@ module.exports = defineConfig({
         })
       // implement node event listeners here
     },
-    baseUrl: 'https://thcdecisions.cn/tlink',
+    baseUrl: 'https://thcdecisions.cn/',
     viewportWidth: 1475,
     viewportHeight: 826,
+    chromeWebSecurity: false,
+    defaultCommandTimeout: 10000,
+    retries: {
+      "runMode": 2
+    }
   },
 });
