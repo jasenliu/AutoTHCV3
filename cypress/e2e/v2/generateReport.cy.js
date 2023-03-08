@@ -1,9 +1,11 @@
 /// <reference types="Cypress" />
 import { login, selectBankByABA, selectBankCycle, clickRiskReportMenuByName, handlePopupboxByID, checkReport } from './v2-daily-utils'
 
+const v2_username = Cypress.env('v2_username')
+const v2_password = Cypress.env('v2_password')
 describe('generate report', () => {
     beforeEach(() => {
-        login('https://test.thchf.com.cn/V2/login2.asp', 'ljs', 'test.test')
+        login('https://test.thchf.com.cn/V2/login2.asp', v2_username, v2_password)
         //select bank(QTestBank3)
         selectBankByABA(91913685)
         //select cycle
@@ -35,16 +37,17 @@ describe('generate report', () => {
 
     })
 
-    it.only('check report progress', () => {
+    it('check report progress', () => {
         const checkAndCompareReport = (reportList, beginTime) => {
             cy.get('#content').then(() => {
                 const endTime = new Date()
                 const diffNumber = Number(endTime) - Number(beginTime)
-                if (diffNumber > 1800 * 1000 || reportList[2] === undefined) {
+                if (diffNumber > 30 * 60 * 1000 || reportList[2] === undefined) {
                     console.log('time over!')
                     return
                 }
                 checkReport(reportList)
+                cy.wait(2 * 60 * 1000) //wait 2 minutes
                 checkAndCompareReport(reportList, beginTime)
 
             })

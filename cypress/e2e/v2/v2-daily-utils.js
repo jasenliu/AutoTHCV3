@@ -101,8 +101,8 @@ export const checkReport = (reportList) => {
             } else {
                 //cy.get('#content').iframe().find(iframeId).iframe().find('#rpt_excel').click()
                 $iframe.contents().find('#rpt_excel').click()
-                delete reportList[index]
                 cy.wait(5000)
+                delete reportList[index]
                 copyAndCompareExcel()
             }
         })

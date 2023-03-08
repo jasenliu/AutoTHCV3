@@ -7,7 +7,11 @@ const generatePath = path.join(fixturesFolder.replace(/\\/g, '/'), 'report/gener
 const diffPath = path.join(fixturesFolder.replace(/\\/g, '/'), 'result')
 
 export const login = (username, password) => {
-  cy.visit("/Account/Login");
+  if (Cypress.env('isCnSite')) {
+    cy.visit("/Account/Login");
+  } else {
+    cy.visit(Cypress.env('v3_com_baseUrl') + '/Account/Login')
+  }
   cy.get("#Login").type(`${username}`);
   cy.get("#Password").type(`${password}`);
   cy.get("#rm_submit_btn").click();

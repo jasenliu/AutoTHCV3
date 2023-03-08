@@ -13,7 +13,12 @@ const dataPath = path.join(fixturesFolder.replace(/\\/g, '/'), 'data')
 describe('generate report', () => {
 
     beforeEach(() => {
-        login('v3_ljs', '1')
+
+        if (Cypress.env('isCnSite')) {
+            login(Cypress.env('v3_cn_username'), Cypress.env('v3_cn_password'))
+        } else {
+            login(Cypress.env('v3_com_username'), Cypress.env('v3_com_password'))
+        }
 
         //go to Generate/View Reports page
         clickLinkByName('Port Analytics & Reporting')
@@ -56,6 +61,7 @@ describe('generate report', () => {
                     return
                 }
                 checkReport(reportList)
+                cy.wait(2 * 60 * 1000) //wait 2 minutes
                 checkAndCompareReport(reportList, beginTime)
 
             })

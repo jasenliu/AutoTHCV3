@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/jasenliu/AutoTHCV3#readme",
   "devDependencies": {
-    "cypress": "^10.7.0",
-    "cypress-mochawesome-reporter": "^3.2.2"
+    "@faker-js/faker": "^7.6.0",
+    "cypress": "^12.3.0",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-mochawesome-reporter": "^3.2.2",
+    "dotenv": "^16.0.3"
   },
   "dependencies": {
     "xlsx-populate": "^1.21.0"

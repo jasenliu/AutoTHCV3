@@ -3,6 +3,10 @@ const { defineConfig } = require("cypress");
 const fs = require('fs')
 const path = require('path')
 const xlsxPopulate = require('xlsx-populate')
+const dotenv = require("dotenv")
+
+dotenv.config({ path: ".env.local "})
+dotenv.config()
 
 function fix2Number(str) {
   return [0, str].join('').slice(-2)
@@ -107,13 +111,30 @@ module.exports = defineConfig({
         })
       // implement node event listeners here
     },
-    baseUrl: 'https://thcdecisions.cn/',
-    viewportWidth: 1475,
-    viewportHeight: 826,
+    baseUrl: 'https://thcdecisions.cn',
+    viewportWidth: 1470,
+    viewportHeight: 815,
     chromeWebSecurity: false,
+    videoCompression: false,
     defaultCommandTimeout: 10000,
     retries: {
       "runMode": 2
     }
   },
+  env: {
+    v3_cn_username: process.env.V3_CN_USERNAME,
+    v3_cn_password: process.env.V3_CN_PASSWORD,
+    v3_com_username: process.env.V3_COM_USERNAME,
+    v3_com_password: process.env.V3_COM_PASSWORD,
+    v3_com_baseUrl: 'https://thcdecisions.com',
+    isCnSite: true,
+
+    v2_daily_username: process.env.V2_DAILY_USERNAME,
+    v2_daily_password: process.env.V2_DAILY_PASSWORD,
+    v2_username: process.env.V2_USERNAME,
+    v2_password: process.env.V2_PASSWORD,
+    v2_pro_daily_username: process.env.V2_PRO_DAILY_USERNAME,
+    V2_pro_daily_password: process.env.V2_PRO_DAILY_PASSWORD,
+
+  }
 });

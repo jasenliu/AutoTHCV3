@@ -1,9 +1,12 @@
 import { login, selectBankByABA, selectBankCycle, clickRiskReportMenuByName, handlePopupboxByID } from './v2-daily-utils'
 
-
+const v2_daily_username = Cypress.env('v2_daily_username')
+const v2_daily_password = Cypress.env('v2_daily_password')
+const v2_pro_daily_username = Cypress.env('v2_pro_daily_username')
+const v2_pro_daily_password = Cypress.env('v2_pro_daily_password')
 describe('v2 daily compare report', () => {
     it('test site create revision and upload pathfile', () => {
-        login('https://test.thchf.com.cn/V2/login2.asp', 'qtest', '1')
+        login('https://test.thchf.com.cn/V2/login2.asp', v2_daily_username, v2_daily_password)
         //select bank(QTestBank3)
         selectBankByABA(763)
         //select cycle
@@ -21,7 +24,7 @@ describe('v2 daily compare report', () => {
     })
 
     it('test site generate report', () => {
-        login('https://test.thchf.com.cn/V2/login2.asp', 'qtest', '1')
+        login('https://test.thchf.com.cn/V2/login2.asp', v2_daily_username, v2_daily_password)
         //select bank(QTestBank3)
         selectBankByABA(763)
         //select cycle
@@ -41,7 +44,7 @@ describe('v2 daily compare report', () => {
     })
 
     it('deploy site create revison and upload pathfile', () => {
-        login('https://deploy.thchf.com.cn/V2/login2.asp', 'qtest', '1')
+        login('https://deploy.thchf.com.cn/V2/login2.asp', v2_daily_username, v2_daily_password)
         //select bank(QTestBank3)
         selectBankByABA(763)
         //select cycle
@@ -60,7 +63,7 @@ describe('v2 daily compare report', () => {
 
 
     it('deploy site generate reports', () => {
-        login('https://deploy.thchf.com.cn/V2/login2.asp', 'qtest', '1')
+        login('https://deploy.thchf.com.cn/V2/login2.asp', v2_daily_username, v2_daily_password)
         //select bank(QTestBank3)
         selectBankByABA(763)
         //select cycle
@@ -79,7 +82,7 @@ describe('v2 daily compare report', () => {
     })
 
     it('production site create revision and upload pathfile', () => {
-        login('https://v2.thcdecisions.com/V2/login2.asp', 'user.bankers', 'user.bankers')
+        login('https://v2.thcdecisions.com/V2/login2.asp', v2_pro_daily_username, v2_pro_daily_password)
         //select bank(QTestBank3)
         selectBankByABA(763)
         //select cycle
@@ -98,7 +101,7 @@ describe('v2 daily compare report', () => {
     })
 
     it('production site generate reports', () => {
-        login('https://v2.thcdecisions.com/V2/login2.asp', 'user.bankers', 'user.bankers')
+        login('https://v2.thcdecisions.com/V2/login2.asp', v2_pro_daily_username, v2_pro_daily_password)
         //select bank(QTestBank3)
         selectBankByABA(763)
         //select cycle
