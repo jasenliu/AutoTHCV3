@@ -115,7 +115,7 @@ describe('Peer Analytics', () => {
 
     })
 
-    it.only('add more fields', () => {
+    it('add more fields', () => {
 
         const field_group_name = faker.random.words()
         //select the last peer group link and click to go to select banks page
