@@ -1,4 +1,4 @@
-import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, popConfirm, copyAndCompareExcel } from "./utils"
+import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, popConfirm, copyAndCompareExcel, popAlert } from "./utils"
 const { faker } = require("@faker-js/faker")
 const path = require('path')
 
@@ -14,12 +14,11 @@ describe('Peer Analytics', () => {
         selectBankCycle('Jun 2022')
         clickLinkByName('Performance Insights') 
         clickLinkByName('Peer Analytics')
-        cy.wait(1000)
+        cy.wait(2000)
     })
 
 
-    it('add peer group and delete it', () => {
-
+    it('add private peer group and delete it', () => {
         const peer_group_name = faker.random.words()
         //click Add button
         cy.get("input[value='Add']").click()
@@ -35,7 +34,41 @@ describe('Peer Analytics', () => {
         popConfirm()
         //assert that new added peer group is deleted
         cy.get('table.lcentral_bid input[type="text"]').last().invoke('val').should('not.contain', peer_group_name)
-        
+    })
+
+    it('add public peer group and delete it', () => {
+        const peer_group_name = faker.random.words()
+        //click Add button
+        cy.get("input[value='Add']").click()
+        //check create a public goup
+        cy.get('input[value="1"]').check
+        //input peer goup name
+        cy.get("div.row input[type='text']").type(peer_group_name)
+        //click save button
+        cy.get('div.row button').click()
+        //get the last input value and assert that it is the new added
+        cy.get('table.lcentral_bid input[type="text"]').last().invoke('val').should('contain', peer_group_name)
+
+        //click Add button
+        cy.get("input[value='Add']").click()
+        //check create a public goup
+        cy.get('input[value="1"]').check
+        //input same peer goup name
+        cy.get("div.row input[type='text']").type(peer_group_name)
+        //click save button
+        cy.get('div.row button').click().then(() => {
+            const alertStub = cy.stub();
+            cy.on("window:alert", alertStub);
+            //assert not allowed to create a existing peer group
+            expect(alertStub.calledWith(peer_group_name))
+        })
+
+        // get the last delete icon to delete the new added peer group
+        cy.get('i.el-icon-delete').last().click()
+        popConfirm()
+        //assert that new added peer group is deleted
+        cy.get('table.lcentral_bid input[type="text"]').last().invoke('val').should('not.contain', peer_group_name)
+ 
     })
 
     it('add banks to peer group and delete them', () => {
@@ -111,7 +144,6 @@ describe('Peer Analytics', () => {
         cy.contains('Delete All').click()
         //assert all the banks were deleted
         cy.contains('Search More Banks').next().invoke('text').should('contain', '0 Banks')
-
 
     })
 
