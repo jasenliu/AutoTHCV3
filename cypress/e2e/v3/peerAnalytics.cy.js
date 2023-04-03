@@ -228,10 +228,11 @@ describe('Peer Analytics', () => {
         //assert 'ACCT_001', 'ACCT_002' show in the page
         cy.contains('ACCT_001').invoke('text').should('eql', 'ACCT_001')
         cy.contains('ACCT_002').invoke('text').should('eql', 'ACCT_002')
+        cy.wait(2000)
 
         //*back to initial state*
         //click Add More Fields link
-        cy.contains('Add More Fields').click()
+        cy.contains('Add More Fields').click({force: true})
         cy.get('#SelectdFields').select(['ACCT_001', 'ACCT_002'])
         //put added fields to unselected fields box
         cy.get('i.fa-arrow-left').click()

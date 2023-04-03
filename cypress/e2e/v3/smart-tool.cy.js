@@ -17,8 +17,12 @@ clickLinkByName, copyAndCompareExcel } from './utils'
 describe('smart tool', () => {
 
   beforeEach(() => {
-    login('v3_ljs', '1')
 
+    if (Cypress.env('isCnSite')) {
+        login(Cypress.env('v3_cn_username'), Cypress.env('v3_cn_password'))
+    } else {
+        login(Cypress.env('v3_com_username'), Cypress.env('v3_com_password'))
+    }
     //go to Generate/View Reports page
     clickLinkByName('Port Analytics & Reporting')
     clickLinkByName('Generate/View Reports')
@@ -208,7 +212,7 @@ describe('smart tool', () => {
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
     cy.wait(2000)
     cy.get('input[value="Download PATHBOOK"]').click({ force:true })
-    cy.wait(10000)
+    //cy.wait(10000)
 
     copyAndCompareExcel()
 
@@ -340,7 +344,7 @@ describe('smart tool', () => {
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
     cy.wait(2000)
     cy.get('input[value="Download PATHBOOK"]').click({ force:true })
-    cy.wait(10000)
+    //cy.wait(10000)
 
     copyAndCompareExcel()
 
@@ -441,7 +445,7 @@ describe('smart tool', () => {
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
     cy.wait(2000)
     cy.get('input[value="Download PATHBOOK"]').click({ force:true })
-    cy.wait(10000)
+    //cy.wait(10000)
 
     copyAndCompareExcel()
 
@@ -607,7 +611,7 @@ describe('smart tool', () => {
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
     cy.wait(2000)
     cy.get('input[value="Download PATHBOOK"]').click({ force:true })
-    cy.wait(10000)
+    //cy.wait(10000)
 
     copyAndCompareExcel()
 

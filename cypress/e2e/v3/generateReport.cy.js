@@ -46,22 +46,22 @@ describe('generate report', () => {
         cy.get('[value="Generate Report"]').click()
         popAlert()
 
-        cy.get('.inline').eq(0).should('exist')
+        cy.get('.el-progress-bar__outer').eq(0).should('exist')
 
     })
 
-    it.only('check report progress' , () => {
+    it('check report progress' , () => {
 
         const checkAndCompareReport = (reportList, beginTime) => {
             cy.get('.topline').then(() => {
                 const endTime = new Date()
                 const diffNumber = Number(endTime) - Number(beginTime)
-                if (diffNumber > 1800 * 1000 || reportList[9] === undefined) {
+                if (diffNumber > 1800 * 1000 || reportList[9] == undefined) {
                     console.log('time over!')
                     return
                 }
                 checkReport(reportList)
-                cy.wait(2 * 60 * 1000) //wait 2 minutes
+                //cy.wait(2 * 60 * 1000) //wait 2 minutes
                 checkAndCompareReport(reportList, beginTime)
 
             })

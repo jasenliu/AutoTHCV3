@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 
 const downloadsFolder = Cypress.config('downloadsFolder')
 const fixturesFolder = Cypress.config('fixturesFolder')
@@ -15,23 +16,23 @@ export const login = (username, password) => {
   cy.get("#Login").type(`${username}`);
   cy.get("#Password").type(`${password}`);
   cy.get("#rm_submit_btn").click();
-  cy.wait(5000);
+  //cy.wait(2000);
 };
 
 export const selectBankByNameAndABA = (bankName, abaNumber) => {
   cy.get(".nirastateF").click({ force: true });
   cy.get("#abaIdDOM").type(`${abaNumber}`);
   cy.get("#searchDOM").click();
-  cy.wait(2000)
+  cy.wait(1000)
   cy.get(`[title=${bankName}]`).click();
-  cy.wait(3000);
+  cy.wait(2000);
 };
 
 export const selectBankCycle = (bankCycle) => {
   cy.get("#app > section > div > div > span > i").click();
   cy.get(".el-icon--right").last().click(); //get total 2 elements and the second is needed
   cy.contains(`${bankCycle}`).click();
-  cy.wait(2000);
+  cy.wait(1000);
 };
 
 export const BSISThreeNext = () => {
@@ -78,6 +79,10 @@ export const popConfirm = () => {
 };
 
 export const copyAndCompareExcel = () => {
+  //get downloaded file name to ensure the file is available
+  cy.task('getDownloadFileName', {downloadsFolder}).then((filename) => {
+    cy.log('downloading file:', filename)
+  })
   //copy downloaded pathfile to generate_report folder and then compare the pathfile
   cy.task("copyFileToDirSync", {
     fromPath: `${downloadsFolder}/`,
@@ -147,14 +152,15 @@ export const checkReport = (reportList) => {
         cy.get('body').then(($body) => {
             if ($body.find(spanID).length) {
                 cy.get(spanID).find('[title="EXCEL"]').click()
+                //reportList.splice(index, 1)
                 delete reportList[index]
-                console.log(`length9:${reportList[9]}`)
-                cy.wait(5000)
+                //console.log(`length9:${reportList[9]}`)
+                //cy.wait(5000)
                 copyAndCompareExcel()
             } else {
                 console.log(`${getReportNameBySpanID(spanID)} was generating...`)
             }
         })
-        cy.wait(3000)
+        //cy.wait(500)
     })
 }
