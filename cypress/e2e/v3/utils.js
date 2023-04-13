@@ -88,15 +88,36 @@ export const copyAndCompareExcel = () => {
     fromPath: `${downloadsFolder}/`,
     toPath: `${generatePath}/`,
   }).then((obj) => {
-    const benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}`;
+    let benchmarkFilePath = ""
     const generateFilePath = `${obj.generateFilePath}`;
     const diffFilePath = `${diffPath}/${obj.fileName}_${obj.currentTime}_diff${obj.extName}`;
 
-    cy.task("compareExcelFile", {
-      benchmarkPath: benchmarkFilePath,
-      generatePath: generateFilePath,
-      diffPath: `${diffFilePath}`,
-    });
+    if (Cypress.env('isCnSite')) {
+      benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}`;
+      cy.task("compareExcelFile", {
+        benchmarkPath: benchmarkFilePath,
+        generatePath: generateFilePath,
+        diffPath: `${diffFilePath}`,
+        isCnSite: Cypress.env('isCnSite')
+      });
+    } else {
+      cy.task('isFileExists', `${benchmarkPath}/${obj.fileName}_pro${obj.extName}`).then((trueorfalse) => {
+        cy.log("trueorflase", trueorfalse)
+        if (trueorfalse) {
+          benchmarkFilePath = `${benchmarkPath}/${obj.fileName}_pro${obj.extName}`
+        } else {
+          benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}` 
+        }
+
+        cy.task("compareExcelFile", {
+          benchmarkPath: benchmarkFilePath,
+          generatePath: generateFilePath,
+          diffPath: `${diffFilePath}`,
+          isCnSite: Cypress.env('isCnSite')
+        });
+      })
+    }
+
   });
 };
 

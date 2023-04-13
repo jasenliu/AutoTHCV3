@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 // ***********************************************************
 // This example support/e2e.js is processed and
 // loaded automatically before your test files.
@@ -16,7 +17,7 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 import 'cypress-mochawesome-reporter/register'
-
+import 'cypress-file-upload';
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
@@ -25,3 +26,11 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   // failing the test
   return false
 })
+
+Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
+  return new Cypress.Promise(resolve => {
+      $iframe.ready(function() {
+        resolve($iframe.contents().find('body'));
+      });
+  });
+});

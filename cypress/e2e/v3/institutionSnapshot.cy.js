@@ -7,7 +7,7 @@ describe('Institution Snapshot', () => {
             login(Cypress.env('v3_com_username'), Cypress.env('v3_com_password'))
         }
         selectBankByNameAndABA('QTestBank3', '763')
-        selectBankCycle('Jun 2022')
+        selectBankCycle('Dec 2022')
         clickLinkByName('Performance Insights') 
         clickLinkByName('Institution Snapshot')
         cy.wait(1000)

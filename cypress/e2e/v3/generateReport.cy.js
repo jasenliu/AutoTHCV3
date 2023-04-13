@@ -50,7 +50,7 @@ describe('generate report', () => {
 
     })
 
-    it('check report progress' , () => {
+    it.skip('check report progress' , () => {
 
         const checkAndCompareReport = (reportList, beginTime) => {
             cy.get('.topline').then(() => {

@@ -46,7 +46,7 @@ describe('smart tool', () => {
     //cy.get('#app > section > div > div > span > i').click()
     //cy.get('.el-icon--right').last().click() //get total 2 elements and the second is needed
     //cy.contains('Jun 2022').click()
-    selectBankCycle('Jun 2022')
+    selectBankCycle('Dec 2022')
 
     //go to Generate/View Reports page
     //cy.contains('Port Analytics & Reporting').click()
@@ -236,7 +236,7 @@ describe('smart tool', () => {
     selectBankByNameAndABA('QTestBank2','762')
 
     //select cycle:202206
-    selectBankCycle('Jun 2022')
+    selectBankCycle('Dec 2022')
 
     //open smart tool page in current page(not open the new page)
     //cy.contains('Smart Pathbook Tool').invoke('removeAttr', '_blank').click()
@@ -356,7 +356,7 @@ describe('smart tool', () => {
     selectBankByNameAndABA('QTestBank3', '763')
 
     //select cycle:202206
-    selectBankCycle('Jun 2022')
+    selectBankCycle('Dec 2022')
 
     //open smart tool page in current page(not open the new page)
     //cy.contains('Smart Pathbook Tool').invoke('removeAttr', '_blank').click()
@@ -451,6 +451,125 @@ describe('smart tool', () => {
 
   })
 
+  it('qtestbank4 smart tool', () => {
+    // select bank:QTestBank3
+    selectBankByNameAndABA('QTestBank4', '764')
+
+    //select cycle:202206
+    selectBankCycle('Dec 2022')
+
+    //open smart tool page in current page(not open the new page)
+    //cy.contains('Smart Pathbook Tool').invoke('removeAttr', '_blank').click()
+    openSmartToolPageInCurrentPage()
+    
+    //click root node
+    //cy.visit('https://thcdecisions.cn/tlink/external/smartpathfiletool')
+    cy.get('#id0').click()
+
+    //open GL(BS) page
+    clickLinkByName('Upload GL(BS)')
+    BSISThreeNext()
+
+    const bsConfirmStub = cy.stub()
+    cy.on('window:confirm', bsConfirmStub)
+
+    cy.get('div.popup-win-close').first().click()
+    cy.wait(2000)
+
+    //open GL(IS) page
+    clickLinkByName('Upload GL(IS)')
+    BSISThreeNext()
+
+    const isConfirmStub = cy.stub()
+    cy.on('window:confirm', isConfirmStub)
+
+    cy.get('div.popup-win-close').first().click()
+    cy.wait(2000)
+
+    //Cash & Short Term node
+    cy.get('#id199').click({ force:true })
+    cy.wait(5000)
+    doubleClickNext()
+    cy.wait(2000)
+
+    //Investments node
+    cy.get('#id103').click({ force: true })
+    cy.get('[value="next3"]').click({ force:true })
+    cy.wait(2000)
+
+    //select second file
+    cy.get('span.fn').eq(1).click({ force:true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //select third file
+    cy.get('span.fn').eq(2).click({ force:true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //Loans node
+    cy.get('#id104').click({ force: true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //select second file
+    cy.get('span.fn').eq(1).click({ force:true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //Other Assets node
+    cy.get('#id105').click({ force: true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //Time Deposits node
+    cy.get('#id298').click({ force: true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //select second file
+    cy.get('span.fn').eq(1).click({ force:true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //Non Maturity node
+    cy.get('#id297').click({ force: true })
+    doubleClickNext()
+    cy.wait(2000)
+    cy.get('[value="next4"]').click()
+    cy.wait(2000)
+
+    //select second file
+    cy.get('span.fn').eq(1).click({ force:true })
+    doubleClickNext()
+    cy.get('[value="next4"]').click()
+    cy.wait(2000)
+
+    //Borrowings node
+    cy.get('#id207').click({ force: true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //select second file
+    cy.get('span.fn').eq(1).click({ force:true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //Other Liabilities node
+    cy.get('#id209').click({ force: true })
+    doubleClickNext()
+    cy.wait(2000)
+
+    //Validate and Download PATHBOOK
+    cy.get('input[value="Validate and Download PATHBOOK"]').click()
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    //cy.wait(10000)
+
+    copyAndCompareExcel()
+
+  })
+
 
   it('qtestbank5 smart tool', () => {
     /*
@@ -462,7 +581,14 @@ describe('smart tool', () => {
 
     // select bank:QTestBank5
     cy.get('.nirastateF').click()
-    cy.get('#abaIdDOM').type('765')
+
+    if (Cypress.env('isCnSite')) {
+        cy.get('#abaIdDOM').type('765')
+    } else {
+        cy.get('#abaIdDOM').type('767')
+    }
+
+    //cy.get('#abaIdDOM').type('765')
     cy.wait(2000)
     cy.get('#searchDOM').click()
     cy.get('[title="QTestBank5"]').click()
@@ -471,7 +597,7 @@ describe('smart tool', () => {
     //select cycle:202206
     cy.get('#app > section > div > div > span > i').click()
     cy.get('.el-icon--right').last().click() //get total 2 elements and the second is needed
-    cy.contains('Jun 2022').click()
+    cy.contains('Dec 2022').click()
     cy.wait(2000)
 
     //go to Generate/View Reports page

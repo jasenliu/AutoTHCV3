@@ -4,6 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const xlsxPopulate = require('xlsx-populate')
 const dotenv = require("dotenv")
+const chokidar = require('chokidar')
 
 dotenv.config({ path: ".env.local "})
 dotenv.config()
@@ -46,6 +47,29 @@ module.exports = defineConfig({
             })
             return generateFileName
           },
+          getDownloadFileName({downloadsFolder}){
+            return new Promise((resolve, reject) => {
+              /*
+              const watcher = fs.watch(downloadsFolder, (eventType, filename) => {
+                if (eventType === 'rename' && !filename.endsWith('.crdownload')) {
+                  resolve(filename)
+                  watcher.close()
+                }
+              })
+              */
+              const ck = chokidar.watch(downloadsFolder).on('add', (filename) => {
+                if (!filename.endsWith('.crdownload')) {
+                  resolve(filename)
+                  ck.close()
+                }
+              })
+              setTimeout(reject, 30000)
+            })
+
+          },
+          downloadsReady: ({downloadsFolder}) => {
+            return fs.readdirSync(downloadsFolder)
+          },
           copyFileToDirSync({ fromPath, toPath }) {
             const currentTime = getCurrentTime()
             let generateFilePath = ''
@@ -64,8 +88,17 @@ module.exports = defineConfig({
             return {generateFilePath, currentTime, fileName, extName}
 
           },
-          compareExcelFile({benchmarkPath, generatePath, diffPath}) {
+          isFileExists(fileName) {
+            return fs.existsSync(fileName)
+          },
+          compareExcelFile({benchmarkPath, generatePath, diffPath, isCnSite }) {
             let isDiff = false
+            let site = ""
+            if (isCnSite) {
+              site = "dev.thcdecisions.cn"
+            } else {
+              site = "thcdecisions.com"
+            }
             xlsxPopulate.fromFileAsync(benchmarkPath).then(benBook => {
               xlsxPopulate.fromFileAsync(generatePath).then(genBook => {
                   console.log(generatePath)
@@ -90,13 +123,13 @@ module.exports = defineConfig({
                   })
                   if (isDiff) {
                       genBook.toFileAsync(diffPath)
-                      const data = { date: `${getCurrentTime()}`, reportName: `${path.basename(benchmarkPath)}`, result: 'diff'}
+                      const data = { site: site, date: `${getCurrentTime()}`, reportName: `${path.basename(benchmarkPath)}`, result: 'diff'}
                       //fs.writeFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
                       fs.appendFileSync('cypress/fixtures/result/result.json', '\n')
                       fs.appendFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
                   } else {
                       console.log('the compared two files were the same')
-                      const data = { date: `${getCurrentTime()}`, reportName: `${path.basename(benchmarkPath)}`, result: 'same'}
+                      const data = { site: site, date: `${getCurrentTime()}`, reportName: `${path.basename(benchmarkPath)}`, result: 'same'}
                       //fs.writeFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
                       fs.appendFileSync('cypress/fixtures/result/result.json', '\n')
                       fs.appendFileSync('cypress/fixtures/result/result.json', JSON.stringify(data))
@@ -111,7 +144,7 @@ module.exports = defineConfig({
         })
       // implement node event listeners here
     },
-    baseUrl: 'https://thcdecisions.cn',
+    baseUrl: 'https://dev.thcdecisions.cn',
     viewportWidth: 1470,
     viewportHeight: 815,
     chromeWebSecurity: false,
@@ -127,7 +160,7 @@ module.exports = defineConfig({
     v3_com_username: process.env.V3_COM_USERNAME,
     v3_com_password: process.env.V3_COM_PASSWORD,
     v3_com_baseUrl: 'https://thcdecisions.com',
-    isCnSite: true,
+    isCnSite: false,
 
     v2_daily_username: process.env.V2_DAILY_USERNAME,
     v2_daily_password: process.env.V2_DAILY_PASSWORD,
