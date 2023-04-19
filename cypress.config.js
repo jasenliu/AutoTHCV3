@@ -77,6 +77,9 @@ module.exports = defineConfig({
             let extName = ''
             fs.readdirSync(fromPath).forEach(file => {
               fileName = path.basename(file, path.extname(file))
+              if (fileName.includes('OASIncome(')) {
+                fileName = 'OASIncome'
+              }
               extName = path.extname(file)
               generateFilePath  = `${toPath}${fileName}_${currentTime}${extName}`
               const srcFileName = `${fromPath}${file}`
