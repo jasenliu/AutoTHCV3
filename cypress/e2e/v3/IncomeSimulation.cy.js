@@ -1,5 +1,4 @@
 import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, copyAndCompareExcel, popConfirm } from "./utils"
-const { faker } = require("@faker-js/faker")
 const path = require('path')
 
 describe('Income Simulation', () => {
