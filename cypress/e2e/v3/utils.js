@@ -20,34 +20,49 @@ export const login = (username, password) => {
 };
 
 export const selectBankByNameAndABA = (bankName, abaNumber) => {
-  cy.get(".nirastateF").click({ force: true });
+  cy.get(".nirastateF",{timeout: 60000}).click({ force: true });
   cy.get("#abaIdDOM").type(`${abaNumber}`);
+  cy.wait(2000)
   cy.get("#searchDOM").click();
-  cy.wait(1000)
-  cy.get(`[title=${bankName}]`).click();
-  cy.wait(2000);
+  cy.wait(2000)
+  cy.get(`[title=${bankName}]`, {timeout: 30000}).click();
+  //assert select client list disappear
+  //cy.get('div.popup-win-client').should('not.be.visible', {timeout: 60000})
+  cy.get(`td[title=${bankName}]`, {timeout: 60000}).should('not.be.visible')
+  cy.wait(1000);
 };
 
 export const selectBankCycle = (bankCycle) => {
-  cy.get("#app > section > div > div > span > i").click();
+  cy.get('div.HiveMindDirect-title i.el-icon-arrow-down').click()
+  //cy.get('#app > section > div > div > span > i').click()
   cy.get(".el-icon--right").last().click(); //get total 2 elements and the second is needed
   cy.contains(`${bankCycle}`).click();
   cy.wait(1000);
 };
 
 export const BSISThreeNext = () => {
+  waitLoading(180000)
   cy.get('[value="Next"]').click();
+  waitLoading(180000)
   cy.get('[value="Next"]').click();
+  waitLoading(180000)
   cy.get('[value="Next"]').click();
+  waitLoading(180000)
 };
 
 export const doubleClickNext = () => {
-  cy.wait(5000);
-  cy.get('[value="next2"]').click({ force: true });
-  cy.wait(2000)
-  cy.get('[value="next3"]').click({ force: true });
-  cy.wait(2000)
+  //cy.wait(5000);
+  waitLoading(180000)
+  cy.get('[value="next2"]', {timeout: 20000}).click({ force: true });
+  waitLoading(180000)
+  cy.get('[value="next3"]', {timeout: 20000}).click({ force: true });
+  waitLoading(180000)
 };
+
+export const waitLoading = (time) => {
+  cy.get('#ajaxLoading', {timeout: `${time}`}).should('not.be.visible')
+  cy.wait(2000)
+}
 
 export const openSmartToolPageInCurrentPage = () => {
   cy.window().then((win) => {
@@ -61,11 +76,13 @@ export const openSmartToolPageInCurrentPage = () => {
   });
   cy.contains("Smart Pathbook Tool").click({ force: true });
   cy.get("@open").should("have.been.calledOnce");
-  cy.wait(8000);
+  //cy.wait(8000);
+  cy.get('#id0', {timeout: 120000}).should('exist')
+
 };
 
 export const clickLinkByName = (linkName) => {
-  cy.contains(`${linkName}`).click({ force: true });
+  cy.contains(`${linkName}`, {timeout: 60000}).click();
 };
 
 export const popAlert = () => {

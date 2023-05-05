@@ -1,4 +1,4 @@
-import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, popConfirm, copyAndCompareExcel, popAlert } from "./utils"
+import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, popConfirm, copyAndCompareExcel, waitLoading } from "./utils"
 const { faker } = require("@faker-js/faker")
 const path = require('path')
 
@@ -20,6 +20,7 @@ describe('Peer Analytics', () => {
 
     it('add private peer group and delete it', () => {
         const peer_group_name = faker.random.words()
+        cy.contains('Peer Group*').should('be.visible')
         //click Add button
         cy.get("input[value='Add']").click()
         //input peer goup name
@@ -38,6 +39,7 @@ describe('Peer Analytics', () => {
 
     it('add public peer group and delete it', () => {
         const peer_group_name = faker.random.words()
+        cy.contains('Peer Group*').should('be.visible')
         //click Add button
         cy.get("input[value='Add']").click()
         //check create a public goup
@@ -72,6 +74,7 @@ describe('Peer Analytics', () => {
     })
 
     it('add banks to peer group and delete them', () => {
+        cy.contains('Peer Group*').should('be.visible')
         //select the last peer group link and click to go to select banks page
         cy.get('table.lcentral_bid a').last().click()
         //click search more banks link
@@ -106,6 +109,7 @@ describe('Peer Analytics', () => {
     })
 
     it('upload peer group bank list, download peer group bank report and export bank list', () => {
+        cy.contains('Peer Group*').should('be.visible')
         //select the last peer group link and click to go to select banks page
         cy.get('table.lcentral_bid a').last().click()
         //upload peer group bank list file
@@ -148,12 +152,13 @@ describe('Peer Analytics', () => {
     })
 
     it('add more fields', () => {
-
         const field_group_name = faker.random.words()
+        cy.contains('Peer Group*').should('be.visible')
         //select the last peer group link and click to go to select banks page
         cy.get('table.lcentral_bid a').last().click()
         //click Add More Fields link
         cy.contains('Add More Fields').click()
+        waitLoading(60000)
         //click save as button to open create/update fields group popup
         cy.get('input[value="Save as"]').click()
         //click cancel button to close the dialog
@@ -209,6 +214,7 @@ describe('Peer Analytics', () => {
 
         //switch to CU field group
         cy.contains('<CU>').click({force: true})
+        waitLoading(60000)
         //assert cu group fields are displayed
         cy.contains('ACCT').invoke('text').should('include', 'ACCT')
 

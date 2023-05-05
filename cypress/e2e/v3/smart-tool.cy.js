@@ -1,6 +1,6 @@
 //const path = require('path')
 import { login, selectBankByNameAndABA, selectBankCycle, BSISThreeNext, doubleClickNext, openSmartToolPageInCurrentPage,
-clickLinkByName, copyAndCompareExcel } from './utils'
+clickLinkByName, copyAndCompareExcel, waitLoading } from './utils'
 
 //const downloadsFolder = Cypress.config('downloadsFolder')
 //const fixturesFolder = Cypress.config('fixturesFolder')
@@ -113,64 +113,59 @@ describe('smart tool', () => {
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //Investments node
     cy.get('#id103').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next3"]').click({ force:true })
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //Loans node
     cy.get('#id104').click({ force: true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(5000)
 
     //select second file
     cy.get('span.fn').eq(1).click( {force:true} )
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Assets node
     cy.get('#id105').click({ force: true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //Time Deposits node
     cy.get('#id298').click({ force: true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //Non Maturity node
     cy.get('#id297').click({ force: true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(5000)
     cy.get('[value="next4"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force: true} )
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.get('[value="next4"]').click()
     cy.wait(2000)
+    cy.get('[value="next4"]').click({ force: true})
+    waitLoading(180000)
 
     //select three file
     cy.get('span.fn').eq(2).click({ force: true })
@@ -178,35 +173,31 @@ describe('smart tool', () => {
     //cy.get('[value="next3"]').click()
     doubleClickNext()
     cy.get('[value="next4"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //Borrowings node
     cy.get('#id207').click({ force: true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //select three file
     cy.get('span.fn').eq(2).click({ force:true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Liabilities node
     cy.get('#id209').click({ force: true })
     //cy.get('[value="next2"]').click()
     //cy.get('[value="next3"]').click()
     doubleClickNext()
-    cy.wait(2000)
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
@@ -274,71 +265,63 @@ describe('smart tool', () => {
 
     //Cash & Short Term node
     cy.get('#id199').click({ force:true })
-    cy.wait(2000)
     doubleClickNext()
-    cy.wait(2000)
 
     //Investments node
     cy.get('#id103').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next3"]').click({ force:true })
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Loans node
     cy.get('#id104').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Assets node
     cy.get('#id105').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Time Deposits node
     cy.get('#id298').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Non Maturity node
     cy.get('#id297').click({ force: true })
     doubleClickNext()
-    cy.get('[value="next4"]').click()
     cy.wait(2000)
+    cy.get('[value="next4"]').click()
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.get('[value="next4"]').click()
     cy.wait(2000)
+    cy.get('[value="next4"]').click()
+    waitLoading(180000)
 
     //Borrowings node
     cy.get('#id207').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Liabilities node
     cy.get('#id209').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
@@ -394,52 +377,48 @@ describe('smart tool', () => {
 
     //Cash & Short Term node
     cy.get('#id199').click({ force:true })
-    cy.wait(5000)
+    //cy.wait(5000)
     doubleClickNext()
-    cy.wait(2000)
 
     //Investments node
     cy.get('#id103').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next3"]').click({ force:true })
-    cy.wait(2000)
+    waitLoading(180000)
 
     //Loans node
     cy.get('#id104').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Assets node
     cy.get('#id105').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Time Deposits node
     cy.get('#id298').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Non Maturity node
     cy.get('#id297').click({ force: true })
     doubleClickNext()
     cy.wait(2000)
     cy.get('[value="next4"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.get('[value="next4"]').click()
     cy.wait(2000)
+    cy.get('[value="next4"]').click()
+    waitLoading(180000)
 
     //Borrowings node
     cy.get('#id207').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Liabilities node
     cy.get('#id209').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
@@ -488,77 +467,68 @@ describe('smart tool', () => {
 
     //Cash & Short Term node
     cy.get('#id199').click({ force:true })
-    cy.wait(5000)
+    //cy.wait(5000)
     doubleClickNext()
-    cy.wait(2000)
 
     //Investments node
     cy.get('#id103').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next3"]').click({ force:true })
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //select third file
     cy.get('span.fn').eq(2).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Loans node
     cy.get('#id104').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Assets node
     cy.get('#id105').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Time Deposits node
     cy.get('#id298').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Non Maturity node
     cy.get('#id297').click({ force: true })
     doubleClickNext()
     cy.wait(2000)
     cy.get('[value="next4"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.get('[value="next4"]').click()
     cy.wait(2000)
+    cy.get('[value="next4"]').click()
+    waitLoading(180000)
 
     //Borrowings node
     cy.get('#id207').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force:true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Other Liabilities node
     cy.get('#id209').click({ force: true })
     doubleClickNext()
-    cy.wait(2000)
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()
@@ -580,7 +550,7 @@ describe('smart tool', () => {
     */
 
     // select bank:QTestBank5
-    cy.get('.nirastateF').click()
+    cy.get('.nirastateF', {timeout: 60000}).click()
 
     if (Cypress.env('isCnSite')) {
         cy.get('#abaIdDOM').type('765')
@@ -591,11 +561,16 @@ describe('smart tool', () => {
     //cy.get('#abaIdDOM').type('765')
     cy.wait(2000)
     cy.get('#searchDOM').click()
+    cy.wait(3000)
     cy.get('[title="QTestBank5"]').click()
+    //assert select client list disappear
+    //cy.get('div.popup-win').should('not.be.visible', {timeout: 60000})
+    cy.get(`td[title="QTestBank5"]`, {timeout: 60000}).should('not.be.visible')
     cy.wait(2000)
 
     //select cycle:202206
-    cy.get('#app > section > div > div > span > i').click()
+    //cy.get('#app > section > div > div > span > i').click()
+    cy.get('div.HiveMindDirect-title i.el-icon-arrow-down').click()
     cy.get('.el-icon--right').last().click() //get total 2 elements and the second is needed
     cy.contains('Dec 2022').click()
     cy.wait(2000)
@@ -615,16 +590,20 @@ describe('smart tool', () => {
     })
     cy.contains('Smart Pathbook Tool').click({ force:true })
     cy.get('@open').should('have.been.calledOnce')
-    cy.wait(6000)
+    cy.get('#id0', {timeout: 120000}).should('exist')
 
     //click root node
     //cy.visit('https://thcdecisions.cn/tlink/external/smartpathfiletool')
     cy.get('#id0').click()
     //open GL(BS) page
     cy.contains('Upload GL(BS)').click()
+    waitLoading(180000)
     cy.get('[value="Next"]').click()
+    waitLoading(180000)
     cy.get('[value="Next"]').click()
+    waitLoading(180000)
     cy.get('[value="Next"]').click()
+    waitLoading(180000)
 
     //const bsAlertStub = cy.stub()
     //cy.on('window:alert', bsAlertStub)
@@ -637,9 +616,13 @@ describe('smart tool', () => {
 
     //open GL(IS) page
     cy.contains('Upload GL(IS)').click()
+    waitLoading(180000)
     cy.get('[value="Next"]').click()
+    waitLoading(180000)
     cy.get('[value="Next"]').click()
+    waitLoading(180000)
     cy.get('[value="Next"]').click()
+    waitLoading(180000)
 
     //const isAlertStub = cy.stub()
     //cy.on('window:alert', isAlertStub)
@@ -652,86 +635,111 @@ describe('smart tool', () => {
 
     //Cash & Short Term node
     cy.get('#id199').click({ force:true })
-    cy.wait(1000)
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //Investments node
     cy.get('#id103').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next3"]').click({ force:true })
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(5000)
+    waitLoading(180000)
 
     //Loans node
     cy.get('#id104').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(3000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //Other Assets node
     cy.get('#id105').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //Time Deposits node
     cy.get('#id298').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(5000)
+    waitLoading(180000)
 
     //Non Maturity node
     cy.get('#id297').click({ force: true })
-    cy.wait(3000)
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click({ force: true })
-    cy.wait(8000)
+    waitLoading(180000)
+    cy.wait(2000)
     cy.get('[value="next4"]').click()
-    cy.wait(3000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(1000)
-    cy.get('[value="next4"]').click()
+    waitLoading(180000)
     cy.wait(2000)
+    cy.get('[value="next4"]').click()
+    waitLoading(180000)
 
     //Borrowings node
     cy.get('#id207').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //select second file
     cy.get('span.fn').eq(1).click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //Other Liabilities node
     cy.get('#id209').click({ force: true })
+    waitLoading(180000)
     cy.get('[value="next2"]').click()
+    waitLoading(180000)
     cy.get('[value="next3"]').click()
-    cy.wait(2000)
+    waitLoading(180000)
 
     //Validate and Download PATHBOOK
     cy.get('input[value="Validate and Download PATHBOOK"]').click()

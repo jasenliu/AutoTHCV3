@@ -77,8 +77,14 @@ module.exports = defineConfig({
             let extName = ''
             fs.readdirSync(fromPath).forEach(file => {
               fileName = path.basename(file, path.extname(file))
+              //incomeSimulation
               if (fileName.includes('OASIncome(')) {
                 fileName = 'OASIncome'
+              }
+
+              //performanceAttribution
+              if (fileName.includes('ReturnAttribution')) {
+                fileName = 'loans_bonds_0421_sample-ReturnAttribution'
               }
               extName = path.extname(file)
               generateFilePath  = `${toPath}${fileName}_${currentTime}${extName}`
@@ -148,11 +154,12 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
     baseUrl: 'https://dev.thcdecisions.cn',
-    viewportWidth: 1470,
-    viewportHeight: 815,
+    viewportWidth: 1455,
+    viewportHeight: 812,
     chromeWebSecurity: false,
     videoCompression: false,
-    defaultCommandTimeout: 10000,
+    defaultCommandTimeout: 20000,
+    //excludeSpecPattern: 'cypress/e2e/v3/performanceAttribution.cy.js',
     retries: {
       "runMode": 2
     }
@@ -163,7 +170,7 @@ module.exports = defineConfig({
     v3_com_username: process.env.V3_COM_USERNAME,
     v3_com_password: process.env.V3_COM_PASSWORD,
     v3_com_baseUrl: 'https://thcdecisions.com',
-    isCnSite: false,
+    isCnSite: true,
 
     v2_daily_username: process.env.V2_DAILY_USERNAME,
     v2_daily_password: process.env.V2_DAILY_PASSWORD,

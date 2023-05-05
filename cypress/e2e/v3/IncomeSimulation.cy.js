@@ -47,7 +47,7 @@ describe('Income Simulation', () => {
         //upload data file
         cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'income_simulation_min.xlsx'), {force: true})
         //input FundName
-        cy.get('input[name="FundName"]').type('income simulation test')
+        cy.get('input[name="FundName"]').type('income simulation test', {force: true})
         //click create button
         cy.get('[style="margin-top: 20px; margin-left: 2%;"] > .buttonBar').click()
         cy.wait(1000)
@@ -71,6 +71,8 @@ describe('Income Simulation', () => {
         //upload data file and click analyze button directly
         //upload data file
         cy.get('#pathFileData').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'income_simulation_min.xlsx'), {force: true})
+        //click upload button
+        cy.get('input[value="Upload"]').click()
         //click Analyze button
         cy.contains('Analyze').click()
         //assert create success
