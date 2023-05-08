@@ -83,9 +83,20 @@ module.exports = defineConfig({
               }
 
               //performanceAttribution
-              if (fileName.includes('ReturnAttribution')) {
+              if (fileName.includes('loans_bonds_0421_sample(')) {
                 fileName = 'loans_bonds_0421_sample-ReturnAttribution'
               }
+
+              //investmentManagement security tab
+              if (fileName.includes('single_security_analysis_v6')) {
+                fileName = 'single_security_analysis_v6'
+              }
+
+              //investmentManagement Performance Attribution tab
+              if (fileName.includes('QTestBank3(20221231)')) {
+                fileName = 'QTestBank3(20221231)-ReturnAttribution'
+              }
+
               extName = path.extname(file)
               generateFilePath  = `${toPath}${fileName}_${currentTime}${extName}`
               const srcFileName = `${fromPath}${file}`
@@ -158,7 +169,7 @@ module.exports = defineConfig({
     viewportHeight: 812,
     chromeWebSecurity: false,
     videoCompression: false,
-    defaultCommandTimeout: 20000,
+    defaultCommandTimeout: 10000,
     //excludeSpecPattern: 'cypress/e2e/v3/performanceAttribution.cy.js',
     retries: {
       "runMode": 2
@@ -170,7 +181,7 @@ module.exports = defineConfig({
     v3_com_username: process.env.V3_COM_USERNAME,
     v3_com_password: process.env.V3_COM_PASSWORD,
     v3_com_baseUrl: 'https://thcdecisions.com',
-    isCnSite: true,
+    isCnSite: false,
 
     v2_daily_username: process.env.V2_DAILY_USERNAME,
     v2_daily_password: process.env.V2_DAILY_PASSWORD,
