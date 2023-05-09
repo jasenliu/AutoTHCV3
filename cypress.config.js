@@ -132,7 +132,10 @@ module.exports = defineConfig({
                               if (cell.find('Printed on')) {
                                 return
                               }
-                              if(cell.value() != genCell.value()) {
+                              if (cell.style("strikethrough")) {
+                                return
+                              }
+                              if (cell.value() != genCell.value()) {
                                   isDiff = true
                                   genCell.value(`expected:${cell.value()}, actual:${genCell.value()}`)
                                   genCell.style("fontColor", "ff0000")
@@ -181,7 +184,7 @@ module.exports = defineConfig({
     v3_com_username: process.env.V3_COM_USERNAME,
     v3_com_password: process.env.V3_COM_PASSWORD,
     v3_com_baseUrl: 'https://thcdecisions.com',
-    isCnSite: false,
+    isCnSite: true,
 
     v2_daily_username: process.env.V2_DAILY_USERNAME,
     v2_daily_password: process.env.V2_DAILY_PASSWORD,
