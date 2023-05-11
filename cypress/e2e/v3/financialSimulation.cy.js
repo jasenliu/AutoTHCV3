@@ -25,6 +25,7 @@ describe('Financial Simulation', () => {
         cy.get('#BudSimulate').click()
         //assert processing message
         cy.contains('budgeting simulation is in processing...').should('exist')
+        cy.wait(1000)
         // wait for processing message disappear
         cy.get('div[role="progressbar"]', {timeout: 30000}).should('not.be.visible')
         //from column Assets to column Tier1 in the Dashboard
@@ -78,6 +79,7 @@ describe('Financial Simulation', () => {
         cy.get('#file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'BudgetingInput(0).xlsx'), {force: true})
         //click upload button
         cy.get('input[value="Upload"]').click()
+        waitLoading(10000)
         //assert upload success
         cy.contains('Upload successful!').should('exist')
 
@@ -87,6 +89,7 @@ describe('Financial Simulation', () => {
         cy.get('#BudSimulate').click()
         //assert processing message disappear
         cy.contains('budgeting simulation is in processing...').should('exist')
+        cy.wait(1000)
         // wait for processing message disappear
         cy.get('div[role="progressbar"]', {timeout: 30000}).should('not.be.visible')
         //from column Assets to column Tier1 in the Dashboard

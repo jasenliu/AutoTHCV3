@@ -55,7 +55,7 @@ describe('Desk Reports', () => {
             })
         }
 
-        waitLoading(5000)
+        waitLoading(10000)
         // upload loan file
         cy.get('input[name="loanFile"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'PATH-sample-Whole_Loan_file_min.xlsx'), {force: true})
         // click Generate Reports button
@@ -78,7 +78,7 @@ describe('Desk Reports', () => {
         // click view link to open View Analytics page
         cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(0).find('a').click()
         waitLoading(10000)
-        cy.wait(3000)
+        cy.wait(5000)
         waitLoading(10000)
         let summary_bench = ['Summary', '', '300,000', '3.625', '1y libor', '', '38', '3.625', '3.245', '258', '', '', '', '', '', '', '', '98.855', '97.764', '1.092', '-0.740', '2.253', '1.661', '2.621', '104.650', '6.127', '38', '4.019', '-0.255', '0.811', '0.597', '0.954', '770', '75.000', '0.973', '-10.762', '0.548', '2.253', '2.568', '32.843', '1.354', '-0.196', '16.569', '18.383', '3.405', '2.876']
         let summary_temp = []
@@ -93,7 +93,7 @@ describe('Desk Reports', () => {
         })
         // click return icon
         cy.get('img[alt="return.png"]').click()
-        waitLoading(5000)
+        waitLoading(10000)
 
         // delete desk report
         cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(1).then(($td) => {
@@ -106,7 +106,7 @@ describe('Desk Reports', () => {
         })
     })
      it('Desk Reports-> Generate Report by Evaluation Date/delete', () => {
-        waitLoading(5000)
+        waitLoading(10000)
         // check Evaluation Date radio button
         cy.get('input[value="EvaluationDate"]').check()
         // upload loan file

@@ -20,16 +20,17 @@ export const login = (username, password) => {
 };
 
 export const selectBankByNameAndABA = (bankName, abaNumber) => {
-  cy.get(".nirastateF",{timeout: 60000}).click({ force: true });
+  cy.get(".nirastateF",{timeout: 120000}).click({ force: true });
   cy.get("#abaIdDOM").type(`${abaNumber}`);
-  cy.wait(2000)
+  cy.wait(3000)
   cy.get("#searchDOM").click();
-  cy.wait(2000)
+  cy.wait(3000)
   cy.get(`[title=${bankName}]`, {timeout: 30000}).click();
   //assert select client list disappear
   //cy.get('div.popup-win-client').should('not.be.visible', {timeout: 60000})
   cy.get(`td[title=${bankName}]`, {timeout: 60000}).should('not.be.visible')
-  cy.wait(1000);
+  waitLoading(20000)
+  cy.wait(3000)
 };
 
 export const selectBankCycle = (bankCycle) => {
@@ -96,6 +97,7 @@ export const popConfirm = () => {
 };
 
 export const copyAndCompareExcel = () => {
+  cy.wait(1000)
   //get downloaded file name to ensure the file is available
   cy.task('getDownloadFileName', {downloadsFolder}).then((filename) => {
     cy.log('downloading file:', filename)
@@ -124,6 +126,52 @@ export const copyAndCompareExcel = () => {
           benchmarkFilePath = `${benchmarkPath}/${obj.fileName}_pro${obj.extName}`
         } else {
           benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}` 
+        }
+
+        cy.task("compareExcelFile", {
+          benchmarkPath: benchmarkFilePath,
+          generatePath: generateFilePath,
+          diffPath: `${diffFilePath}`,
+          isCnSite: Cypress.env('isCnSite')
+        });
+      })
+    }
+
+  });
+};
+
+export const copyAndCompareExcelByGivenFile = (benchFileName) => {
+  cy.wait(1000)
+  //get downloaded file name to ensure the file is available
+  cy.task('getDownloadFileName', {downloadsFolder}).then((filename) => {
+    cy.log('downloading file:', filename)
+  })
+  //copy downloaded pathfile to generate_report folder and then compare the pathfile
+  cy.task("copyFileToDirSync", {
+    fromPath: `${downloadsFolder}/`,
+    toPath: `${generatePath}/`,
+  }).then((obj) => {
+    let benchmarkFilePath = ""
+    const generateFilePath = `${obj.generateFilePath}`;
+    //const diffFilePath = `${diffPath}/${obj.fileName}_${obj.currentTime}_diff${obj.extName}`;
+    const diffFilePath = `${diffPath}/${benchFileName}_${obj.currentTime}_diff${obj.extName}`;
+
+    if (Cypress.env('isCnSite')) {
+      //benchmarkFilePath = `${benchmarkPath}/${obj.fileName}${obj.extName}`;
+      benchmarkFilePath = `${benchmarkPath}/${benchFileName}${obj.extName}`;
+      cy.task("compareExcelFile", {
+        benchmarkPath: benchmarkFilePath,
+        generatePath: generateFilePath,
+        diffPath: `${diffFilePath}`,
+        isCnSite: Cypress.env('isCnSite')
+      });
+    } else {
+      cy.task('isFileExists', `${benchmarkPath}/${benchFileName}_pro${obj.extName}`).then((trueorfalse) => {
+        cy.log("trueorflase", trueorfalse)
+        if (trueorfalse) {
+          benchmarkFilePath = `${benchmarkPath}/${benchFileName}_pro${obj.extName}`
+        } else {
+          benchmarkFilePath = `${benchmarkPath}/${benchFileName}${obj.extName}` 
         }
 
         cy.task("compareExcelFile", {
@@ -199,6 +247,6 @@ export const checkReport = (reportList) => {
                 console.log(`${getReportNameBySpanID(spanID)} was generating...`)
             }
         })
-        //cy.wait(500)
+        cy.wait(1000)
     })
 }
