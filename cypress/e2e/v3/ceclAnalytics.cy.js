@@ -145,7 +145,7 @@ describe('CECL Analytics', () => {
 
     })
 
-    it.only('CECL Analytics -> Download report' , () => {
+    it('CECL Analytics -> Download report' , () => {
         cy.contains('* Those scenarios are pre-set by THC.').should('be.visible')
         // cecltable download
         cy.get('input[value="Download"]').click()

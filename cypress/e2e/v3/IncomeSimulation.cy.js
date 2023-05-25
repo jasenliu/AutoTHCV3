@@ -20,7 +20,7 @@ describe('Income Simulation', () => {
             cy.get('body').then(($body) => {
                 const endTime = new Date()
                 const diffNumber = Number(endTime) - Number(beginTime)
-                if (diffNumber > 5 * 60 * 1000) {// more than 4 minutes
+                if (diffNumber > 5 * 60 * 1000) {// more than 5 minutes
                     console.log("income simulation report generate time over.")
                     return
                 }
@@ -35,6 +35,9 @@ describe('Income Simulation', () => {
                 checkReport(beginTime)
             })
         }
+        // click sample path file button
+        cy.get('input[value="Sample PATH File"]').click()
+        copyAndCompareExcel()
         //click New Fund/Portfolio button
         cy.contains('New Fund/Portfolio').click()
         //click cancel button
@@ -45,7 +48,7 @@ describe('Income Simulation', () => {
         //click New Fund/Portfolio button
         cy.contains('New Fund/Portfolio').click()
         //upload data file
-        cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'income_simulation_min.xlsx'), {force: true})
+        cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'Path-sample-ALIS.xlsx'), {force: true})
         //input FundName
         cy.get('input[name="FundName"]').type('income simulation test', {force: true})
         //click create button
@@ -65,12 +68,12 @@ describe('Income Simulation', () => {
 
         //click OAS Income tab
         cy.get('#tab-second').click()
-        cy.contains('Analyze & Download').click({force: true})
+        cy.contains('Analyze & Download').click({force: true}) // if the report not finished this line will fail
         copyAndCompareExcel()
 
         //upload data file and click analyze button directly
         //upload data file
-        cy.get('#pathFileData').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'income_simulation_min.xlsx'), {force: true})
+        cy.get('#pathFileData').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'Path-sample-ALIS.xlsx'), {force: true})
         //click upload button
         cy.get('input[value="Upload"]').click()
         //click Analyze button

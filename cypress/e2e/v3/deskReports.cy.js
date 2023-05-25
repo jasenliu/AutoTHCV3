@@ -82,13 +82,13 @@ describe('Desk Reports', () => {
         waitLoading(10000)
         let summary_bench = ['Summary', '', '300,000', '3.625', '1y libor', '', '38', '3.625', '3.245', '258', '', '', '', '', '', '', '', '98.855', '97.764', '1.092', '-0.740', '2.253', '1.661', '2.621', '104.650', '6.127', '38', '4.019', '-0.255', '0.811', '0.597', '0.954', '770', '75.000', '0.973', '-10.762', '0.548', '2.253', '2.568', '32.843', '1.354', '-0.196', '16.569', '18.383', '3.405', '2.876']
         let summary_temp = []
-        // get summary info from table
+        // get summary info from table. note:if the report not finished the below line will fail
         cy.get('div[name="center"] div.ag-center-cols-container div.ag-cell-value').then(($divs) => {
             $divs.each((index, $div) => {
                 summary_temp.push($div.innerText)
             })
             cy.log(summary_temp)
-            // assert summary info
+            // assert summary info  
             expect(summary_temp).to.deep.equal(summary_bench)
         })
         // click return icon

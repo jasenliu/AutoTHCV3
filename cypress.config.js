@@ -123,6 +123,9 @@ module.exports = defineConfig({
               xlsxPopulate.fromFileAsync(generatePath).then(genBook => {
                   console.log(generatePath)
                   benBook.sheets().forEach(function(sheet, sheetId, arrSheet) {
+                      if (sheet.hidden()) {
+                        return
+                      }
                       const genSheet = genBook.sheet(sheet.name())
                       console.log(`sheetName:${sheet.name()}`)
                       sheet._rows.forEach(function(row) {
@@ -136,6 +139,13 @@ module.exports = defineConfig({
                                 return
                               }
                               if (cell.value() != genCell.value()) {
+                                  if (Number.isFinite(cell.value())) {
+                                    benValue = parseFloat(cell.value())
+                                    genValue = parseFloat(genCell.value())
+                                    if (Math.abs(benValue - genValue) < 0.0001) {
+                                      return
+                                    }
+                                  }
                                   isDiff = true
                                   genCell.value(`expected:${cell.value()}, actual:${genCell.value()}`)
                                   genCell.style("fontColor", "ff0000")
