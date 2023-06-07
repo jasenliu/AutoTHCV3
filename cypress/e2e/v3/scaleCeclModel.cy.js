@@ -132,6 +132,8 @@ describe('SCALE CECL Model', () => {
         cy.get('input[value="Clear"].buttonBar').click()
         // assert clear success info
         cy.contains('Clear Successfully.').should('exist')
+        // click save button
+        cy.get('input[value="Save"]').click()
         // assert sumary info
         cy.contains('CECL ACL Total').next().should('have.value', '0')
         cy.contains('Adjustment for Historical Loss Experience').next().should('have.value', '0')

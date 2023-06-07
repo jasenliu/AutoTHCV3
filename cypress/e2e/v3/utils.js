@@ -25,10 +25,10 @@ export const selectBankByNameAndABA = (bankName, abaNumber) => {
   cy.wait(3000)
   cy.get("#searchDOM").click();
   cy.wait(3000)
-  cy.get(`[title=${bankName}]`, {timeout: 30000}).click();
+  cy.get(`[title="${bankName}"]`, {timeout: 30000}).click();
   //assert select client list disappear
   //cy.get('div.popup-win-client').should('not.be.visible', {timeout: 60000})
-  cy.get(`td[title=${bankName}]`, {timeout: 60000}).should('not.be.visible')
+  cy.get(`td[title="${bankName}"]`, {timeout: 60000}).should('not.be.visible')
   waitLoading(20000)
   cy.wait(3000)
 };

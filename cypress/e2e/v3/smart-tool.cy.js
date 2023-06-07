@@ -1,6 +1,6 @@
 //const path = require('path')
 import { login, selectBankByNameAndABA, selectBankCycle, BSISThreeNext, doubleClickNext, openSmartToolPageInCurrentPage,
-clickLinkByName, copyAndCompareExcel, waitLoading } from './utils'
+clickLinkByName, copyAndCompareExcel, copyAndCompareExcelByGivenFile, waitLoading } from './utils'
 
 //const downloadsFolder = Cypress.config('downloadsFolder')
 //const fixturesFolder = Cypress.config('fixturesFolder')
@@ -761,5 +761,130 @@ describe('smart tool', () => {
     */
   })
 
+  it('CORDER BANK, THE', () => {
+    // select bank:CORDER BANK, THE
+    selectBankByNameAndABA('CORDER BANK, THE','101909398')
+
+    //select cycle:202109
+    selectBankCycle('Sep 2021')
+
+    //open smart tool page in current page(not open the new page)
+    //cy.contains('Smart Pathbook Tool').invoke('removeAttr', '_blank').click()
+    openSmartToolPageInCurrentPage()
+
+    //click root node
+    //cy.visit('https://thcdecisions.cn/tlink/external/smartpathfiletool')
+    cy.get('#id0').click()
+
+    //open GL(BS) page
+    clickLinkByName('Upload GL(BS)')
+    BSISThreeNext()
+
+    //const bsAlertStub = cy.stub()
+    //cy.on('window:alert', bsAlertStub)
+
+    const bsConfirmStub = cy.stub()
+    cy.on('window:confirm', bsConfirmStub)
+
+    cy.get('div.popup-win-close').first().click()
+    cy.wait(2000)
+
+    //open GL(IS) page
+    clickLinkByName('Upload GL(IS)')
+    BSISThreeNext()
+
+    //const isAlertStub = cy.stub()
+    //cy.on('window:alert', isAlertStub)
+
+    const isConfirmStub = cy.stub()
+    cy.on('window:confirm', isConfirmStub)
+
+    cy.get('div.popup-win-close').first().click()
+    cy.wait(2000)
+
+    //Cash & Short Term node
+    cy.get('#id199').click({ force:true })
+    doubleClickNext()
+
+    //Investments node
+    cy.get('#id103').click({ force: true })
+    waitLoading(180000)
+    cy.get('[value="next3"]').click({ force:true })
+    waitLoading(180000)
+
+    //Loans node
+    cy.get('#id104').click({ force: true })
+    doubleClickNext()
+
+    //select second file
+    cy.get('span.fn').eq(1).click({ force:true })
+    doubleClickNext()
+
+    //Other Assets node
+    cy.get('#id105').click({ force: true })
+    doubleClickNext()
+
+    //Time Deposits node
+    // 1. T002 set to SELF-INDEX
+    // 2. click Next, T002 in pathfile will be self-index
+    // 3. click left tree
+    // 4. T002 will not be self-index and be replaced by normal index + spread
+    // 5. click Next
+    // 6. pathfile T002 will not be self-index and be replaced by normal index
+    cy.get('#id298').click({ force: true })
+    //doubleClickNext()
+
+    waitLoading(180000)
+    cy.get('[value="next2"]', {timeout: 20000}).click({ force: true });
+    waitLoading(180000)
+    // click advanced setting of index
+    cy.contains('T002').next().next().next().find('a').click()
+    cy.get('table.mapping-tbl').find('select').eq(1).select('Self-Index', {force: true})
+    cy.get('.stepContent .popup-win').find('input[value="OK"]').click()
+    cy.get('[value="next3"]', {timeout: 20000}).click({ force: true });
+    waitLoading(180000)
+    cy.contains('Self-Index').should('exist')
+    //Validate and Download PATHBOOK
+    cy.get('input[value="Validate and Download PATHBOOK"]').click()
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    copyAndCompareExcelByGivenFile('CORDER BANK, THE_SmartTool_PathFile_Self-Index')
+    cy.wait(3000)
+
+    //Other Assets node
+    cy.get('#id105').click({ force: true })
+    waitLoading(180000)
+    // Time Deposits node
+    cy.get('#id298').click({ force: true })
+    doubleClickNext()
+    cy.contains('3-Year-FHLB advance rate').should('exist')
+    /*
+    //Validate and Download PATHBOOK
+    cy.get('input[value="Validate and Download PATHBOOK"]').click()
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    copyAndCompareExcel()
+    */
+
+    //Non Maturity node
+    cy.get('#id297').click({ force: true })
+    doubleClickNext()
+    cy.wait(2000)
+    cy.get('[value="next4"]').click()
+    waitLoading(180000)
+
+    //Other Liabilities node
+    cy.get('#id209').click({ force: true })
+    doubleClickNext()
+
+    //Validate and Download PATHBOOK
+    cy.get('input[value="Validate and Download PATHBOOK"]').click()
+    cy.wait(2000)
+    cy.get('input[value="Download PATHBOOK"]').click({ force:true })
+    //cy.wait(10000)
+
+    copyAndCompareExcel()
+  })
+    
 
 })
