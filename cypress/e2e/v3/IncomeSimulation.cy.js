@@ -87,7 +87,7 @@ describe('Income Simulation', () => {
 
     it('Income Simulation->delete fund', () => {
         //click Fund link
-        cy.contains(' Fund:').click()
+        cy.contains('Fund:').click()
         //assert Fund Management dialog is pop-up
         cy.contains('Fund Management').should('exist')
         //click cycle delete icon
