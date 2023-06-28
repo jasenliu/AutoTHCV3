@@ -22,8 +22,8 @@ describe('Loan Structurer', () => {
         cy.contains('Term:').next().find('input').type('55')
         // click Submit to Pipeline button
         cy.contains('Submit to Pipeline').click()
+        waitLoading(1000)
         // go to Loan Pipeline Management app
-        //clickLinkByName('Profitability Analytics')
         clickLinkByName('Loan Pipeline Management')
         waitLoading(10000)
         //assert created pipeline exists

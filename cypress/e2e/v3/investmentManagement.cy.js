@@ -67,7 +67,7 @@ describe('Investment Management', () => {
         //click Performance Attribution tab
         cy.get('div.el-card__body').contains('Performance Attribution').click()
         waitLoading(20000)
-        const performanceAttribution_bench = ['', '12/31/2022', '09/30/2022 - 12/31/2022', '3,148,985', '1.146%', '0.832%', '0.014%', '0.000%', '0.000%', '0.170%', '-0.582%', '-0.116%', '0.586%', '-0.000%', '0.237%', '-0.018%', '0.000%', '0.000%', '0.023%', '']
+        const performanceAttribution_bench = ['', '12/31/2022', '09/30/2022 - 12/31/2022', '3,148,985', '1.146%', '0.832%', '0.014%', '0.000%', '0.000%', '0.170%', '-0.582%', '-0.116%', '0.586%', '-0.000%', '0.237%', '-0.018%', '0.000%', '0.000%', '0.023%', ' ']
         //get cell data from table
         cy.get('div.el-card__body table tbody tr').then(($rows) => {
             $rows.each((index, $row) => {

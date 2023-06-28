@@ -29,23 +29,23 @@ describe('Desk Reports', () => {
                     console.log("Desk report is generating...")
                 } else {
                     //download Loan Performance reort and compare
-                    cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(16).find('img').click()
-                    copyAndCompareExcel()
-                    cy.wait(2000)
-                    //download Decrement Cashflow reort and compare
                     cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(17).find('img').click()
                     copyAndCompareExcel()
                     cy.wait(2000)
-                    //download Loan Cashflow reort and compare
+                    //download Decrement Cashflow reort and compare
                     cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(18).find('img').click()
                     copyAndCompareExcel()
                     cy.wait(2000)
+                    //download Loan Cashflow reort and compare
+                    cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(19).find('img').click()
+                    copyAndCompareExcel()
+                    cy.wait(2000)
                     //download Lambda reort and compare
-                    cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(20).find('img').click()
+                    cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(21).find('img').click()
                     copyAndCompareExcel()
                     cy.wait(2000)
                     //download source file and compare
-                    cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(21).find('a').click()
+                    cy.get('table.lcentral_bid tbody tr').eq(0).children().eq(22).find('a').click()
                     copyAndCompareExcel()
                     cy.wait(1000)
                     return
@@ -80,7 +80,7 @@ describe('Desk Reports', () => {
         waitLoading(10000)
         cy.wait(5000)
         waitLoading(10000)
-        let summary_bench = ['Summary', '', '300,000', '3.625', '1y libor', '', '38', '3.625', '3.245', '258', '', '', '', '', '', '', '', '98.855', '97.764', '1.092', '-0.740', '2.253', '1.661', '2.621', '104.650', '6.127', '38', '4.019', '-0.255', '0.811', '0.597', '0.954', '770', '75.000', '0.973', '-10.762', '0.548', '2.253', '2.568', '32.843', '1.354', '-0.196', '16.569', '18.383', '3.405', '2.876']
+        let summary_bench = ['Summary','','300,000','3.625','1y libor','','38','3.625','3.245','258','','','','','','','','','','','','','','','','','','','98.855','97.764','1.092','-0.740','2.253','1.661','2.621','104.650','6.127','38','4.019','-0.255','0.811','0.597','0.954','770','75.000','0.973','-10.762','0.548','2.253','2.568','32.843','1.354','-0.196','16.569','18.383','3.405','2.876']
         let summary_temp = []
         // get summary info from table. note:if the report not finished the below line will fail
         cy.get('div[name="center"] div.ag-center-cols-container div.ag-cell-value').then(($divs) => {
@@ -105,7 +105,7 @@ describe('Desk Reports', () => {
             cy.contains(deskReportId).should('not.exist')
         })
     })
-     it('Desk Reports-> Generate Report by Evaluation Date/delete', () => {
+    it('Desk Reports-> Generate Report by Evaluation Date/delete', () => {
         waitLoading(10000)
         // check Evaluation Date radio button
         cy.get('input[value="EvaluationDate"]').check()
@@ -118,5 +118,5 @@ describe('Desk Reports', () => {
         cy.contains('Calculating',{timeout: 90000}).should('exist')
         // delete desktop report
         cy.get('table.lcentral_bid tbody tr').eq(0).children().last().find('i').click()
-     })
+    })
 })
