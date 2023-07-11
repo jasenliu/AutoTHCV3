@@ -79,24 +79,28 @@ describe('Peer Analytics', () => {
         cy.get('table.lcentral_bid a').last().click()
         //click search more banks link
         cy.contains('Search More Banks').click()
-        //selected all the checkbox in current page
-        cy.get('table.lcentral_bid input').each(($checkbox, index, $list) => {
-            cy.wrap($checkbox).check() //12 banks will be selected
+        waitLoading(2000)
+        //selected 5 checkbox in current page
+        cy.get('.ag-center-cols-container .ag-input-field-input').each(($checkbox, index, $list) => {
+            if (index > 4) {
+                return
+            }
+            cy.wrap($checkbox).check({force: true}) //5 banks will be selected
         })
         //clcik Add button
         cy.get('input[value="Add"]').click()
         popConfirm()
-        //assert the 12 banks had added to the peer group
-        cy.contains('Search More Banks').next().invoke('text').should('contain', '12 Banks')
+        //assert the 5 banks had added to the peer group
+        cy.contains('Search More Banks').next().invoke('text').should('contain', '5 Banks')
 
         //delete the first bank
-        cy.get('i.el-icon-delete').first().click()
+        cy.get('.ag-center-cols-container i.far').first().click()
         popConfirm()
         //assert the first bank had been deleted
-        cy.contains('Search More Banks').next().invoke('text').should('contain', '11 Banks')
+        cy.contains('Search More Banks').next().invoke('text').should('contain', '4 Banks')
 
         //delete all the banks
-        cy.contains('Delete All').click()
+        cy.get('.ag-header-cell-comp-wrapper i.far').click()
         popConfirm()
         //assert all the banks were deleted
         cy.contains('Search More Banks').next().invoke('text').should('contain', '0 Banks')
@@ -145,7 +149,7 @@ describe('Peer Analytics', () => {
         copyAndCompareExcel()
 
         //delete all the banks back to initial state
-        cy.contains('Delete All').click()
+        cy.get('.ag-header-cell-comp-wrapper i.far').click()
         //assert all the banks were deleted
         cy.contains('Search More Banks').next().invoke('text').should('contain', '0 Banks')
 
