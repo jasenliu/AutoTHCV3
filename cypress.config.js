@@ -5,9 +5,22 @@ const path = require('path')
 const xlsxPopulate = require('xlsx-populate')
 const dotenv = require("dotenv")
 const chokidar = require('chokidar')
+const nodemailer = require("nodemailer")
 
 dotenv.config({ path: ".env.local "})
 dotenv.config()
+
+const email_user = process.env.EMAIL_USER
+const email_pass = process.env.EMAIL_PASS
+let transport = nodemailer.createTransport({
+  host: "smtp.exmail.qq.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: email_user, // need modify "from: EMAIL_USER" at D:\AutoTHCV3\node_modules\cypress-email-results\src\index.js
+    pass: email_pass, // EMAIL_USER need to the same as from
+  },
+})
 
 function fix2Number(str) {
   return [0, str].join('').slice(-2)
@@ -30,6 +43,11 @@ module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
+      require('cypress-email-results')(on, config, {
+        email: ['jsliu@thc.net.cn'],
+        transport
+      })
+
       on('task', {
           copyFileToDir({ fromPath, toPath }) {
             const currentTime = getCurrentTime()
@@ -108,6 +126,14 @@ module.exports = defineConfig({
             return {generateFilePath, currentTime, fileName, extName}
 
           },
+          getFileNames(dirPath) {
+            fs.readdirSync(dirPath).forEach(file => {
+              //fileName = path.basename(file, path.extname(file))
+              fs.appendFileSync('F:/cmo/cmo_list/thccmos/filenames11.json', ',')
+              fs.appendFileSync('F:/cmo/cmo_list/thccmos/filenames11.json', JSON.stringify(file))
+            })
+            return null
+          },
           isFileExists(fileName) {
             return fs.existsSync(fileName)
           },
@@ -183,6 +209,7 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     videoCompression: false,
     defaultCommandTimeout: 10000,
+    pageLoadTimeout: 120000,
     //excludeSpecPattern: 'cypress/e2e/v3/performanceAttribution.cy.js',
     retries: {
       "runMode": 2
