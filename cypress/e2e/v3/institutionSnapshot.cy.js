@@ -9,11 +9,11 @@ describe('Institution Snapshot', () => {
         selectBankByNameAndABA('QTestBank3', '763')
         selectBankCycle('Dec 2022')
         clickLinkByName('Performance Insights') 
-        clickLinkByName('Institution Snapshot')
+        cy.get('span[title="Performance Insights"]').eq(1).click() 
         cy.wait(1000)
     })
 
-    it('Institution Snapshot', () => {
+    it('Performance Insights -> Institution Snapshot', () => {
         //click download button
         cy.get('input[value="download"]').click()
         copyAndCompareExcel()
