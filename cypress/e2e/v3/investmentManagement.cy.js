@@ -1,4 +1,4 @@
-import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, copyAndCompareExcel, waitLoading } from "./utils"
+import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, copyAndCompareExcel, waitLoading, copyAndCompareExcelByGivenFile } from "./utils"
 const path = require('path')
 
 describe('Investment Management', () => {
@@ -32,7 +32,7 @@ describe('Investment Management', () => {
         waitLoading(10000)
         //click excel icon to download single security analysis report
         cy.get('div.loading img').click()
-        copyAndCompareExcel()
+        copyAndCompareExcelByGivenFile('single_security_analysis_v6')
 
         //close security analysis pop up page
         cy.get('div.el-card__body div.popup-win-close i.el-icon-close').click({force: true})
