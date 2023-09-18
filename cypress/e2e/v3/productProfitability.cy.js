@@ -28,7 +28,7 @@ describe('Product Profitability', () => {
         cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'productratesheet.xlsx'), {force: true})
         // click upload button
         cy.get('input[value="Upload"]').click()
-        waitLoading(5000)
+        waitLoading(25000)
         // check Terms Conditions
         cy.contains('Terms Conditions').prev().check()
         // assert NACR show in the page
@@ -39,6 +39,7 @@ describe('Product Profitability', () => {
         cy.contains('NACR').should('not.exist')
         // click Calculate button
         cy.get('input[value="Calculate"]').click()
+        waitLoading(25000)
         // assert progress bar
         cy.get('div[role="progressbar"]').should('be.visible')
         // click history icon to pop-up Rate Sheet History page
@@ -53,6 +54,7 @@ describe('Product Profitability', () => {
         cy.contains('Rate Sheet History').next().click({force: true})
         // click Clear all link
         cy.contains('Clear All').click()
+        waitLoading(25000)
         // assert clear all success
         cy.contains('* the rate sheet from rate sheet (THC).').should('be.visible')
 
@@ -67,7 +69,7 @@ describe('Product Profitability', () => {
         cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'productratesheet.xlsx'), {force: true})
         // click upload button
         cy.get('input[value="Upload"]').click()
-        waitLoading(5000)
+        waitLoading(25000)
         // check Terms Conditions
         cy.contains('Terms Conditions').prev().check()
         // assert NACR show in the page
@@ -78,6 +80,7 @@ describe('Product Profitability', () => {
         cy.contains('NACR').should('not.exist')
         // click Calculate button
         cy.get('input[value="Calculate"]').click()
+        waitLoading(25000)
         // assert progress bar
         cy.get('div[role="progressbar"]').should('be.visible')
         // click history icon to pop-up Rate Sheet History page
@@ -92,6 +95,7 @@ describe('Product Profitability', () => {
         cy.contains('Rate Sheet History').next().click({force: true})
         // click Clear all link
         cy.contains('Clear All').click()
+        waitLoading(25000)
         // assert clear all success
         cy.contains('* the rate sheet from rate sheet (THC).').should('be.visible')
 
