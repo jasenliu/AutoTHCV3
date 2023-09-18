@@ -11,50 +11,52 @@ describe('Peer Analytics', () => {
             login(Cypress.env('v3_com_username'), Cypress.env('v3_com_password'))
         }
         selectBankByNameAndABA('QTestBank3', '763')
-        selectBankCycle('Jun 2022')
+        selectBankCycle('Dec 2022')
         clickLinkByName('Performance Insights') 
-        clickLinkByName('Peer Analytics')
+        cy.get('span[title="Performance Insights"]').eq(1).click() 
+        // click Peer Analytics tab
+        cy.contains('Peer Analytics').click()
         cy.wait(2000)
     })
 
 
     it('add private peer group and delete it', () => {
         const peer_group_name = faker.random.words()
-        cy.contains('Peer Group*').should('be.visible')
-        //click Add button
-        cy.get("input[value='Add']").click()
+        cy.contains('Peer Group*', {timeout: 30000}).should('be.visible')
+        //click Create Peer Group button
+        cy.get("input[value='Create Peer Group']").click()
         //input peer goup name
         cy.get("div.row input[type='text']").type(peer_group_name)
         //click save button
         cy.get('div.row button').click()
         //get the last input value and assert that it is the new added
-        cy.get('table.lcentral_bid input[type="text"]').last().invoke('val').should('contain', peer_group_name)
+        cy.get('.ag-center-cols-clipper >div >div >div').last().children().eq(1).find('input[type="text"]').invoke('val').should('contain', peer_group_name)
 
         // get the last delete icon to delete the new added peer group
         cy.get('i.el-icon-delete').last().click()
         popConfirm()
         //assert that new added peer group is deleted
-        cy.get('table.lcentral_bid input[type="text"]').last().invoke('val').should('not.contain', peer_group_name)
+        cy.get('.ag-center-cols-clipper >div >div >div').last().children().eq(1).find('input[type="text"]').invoke('val').should('not.contain', peer_group_name)
     })
 
     it('add public peer group and delete it', () => {
         const peer_group_name = faker.random.words()
-        cy.contains('Peer Group*').should('be.visible')
-        //click Add button
-        cy.get("input[value='Add']").click()
+        cy.contains('Peer Group*', {timeout: 30000}).should('be.visible')
+        //click Create Peer Group button
+        cy.get("input[value='Create Peer Group']").click()
         //check create a public goup
-        cy.get('input[value="1"]').check
+        cy.get('input[value="1"]').check()
         //input peer goup name
         cy.get("div.row input[type='text']").type(peer_group_name)
         //click save button
         cy.get('div.row button').click()
         //get the last input value and assert that it is the new added
-        cy.get('table.lcentral_bid input[type="text"]').last().invoke('val').should('contain', peer_group_name)
+        cy.get('.ag-center-cols-clipper >div >div >div').last().children().eq(1).find('input[type="text"]').invoke('val').should('contain', peer_group_name)
 
-        //click Add button
-        cy.get("input[value='Add']").click()
+        //click Create Peer Group button
+        cy.get("input[value='Create Peer Group']").click()
         //check create a public goup
-        cy.get('input[value="1"]').check
+        cy.get('input[value="1"]').check()
         //input same peer goup name
         cy.get("div.row input[type='text']").type(peer_group_name)
         //click save button
@@ -69,17 +71,15 @@ describe('Peer Analytics', () => {
         cy.get('i.el-icon-delete').last().click()
         popConfirm()
         //assert that new added peer group is deleted
-        cy.get('table.lcentral_bid input[type="text"]').last().invoke('val').should('not.contain', peer_group_name)
+        cy.get('.ag-center-cols-clipper >div >div >div').last().children().eq(1).find('input[type="text"]').invoke('val').should('not.contain', peer_group_name)
  
     })
 
     it('add banks to peer group and delete them', () => {
-        cy.contains('Peer Group*').should('be.visible')
+        cy.contains('Peer Group*', {timeout: 30000}).should('be.visible')
         //select the last peer group link and click to go to select banks page
-        cy.get('table.lcentral_bid a').last().click()
-        //click search more banks link
-        cy.contains('Search More Banks').click()
-        waitLoading(2000)
+        cy.get('.ag-center-cols-clipper a').last().click()
+        waitLoading(30000)
         //selected 5 checkbox in current page
         cy.get('.ag-center-cols-container .ag-input-field-input').each(($checkbox, index, $list) => {
             if (index > 4) {
@@ -87,59 +87,73 @@ describe('Peer Analytics', () => {
             }
             cy.wrap($checkbox).check({force: true}) //5 banks will be selected
         })
-        //clcik Add button
-        cy.get('input[value="Add"]').click()
-        popConfirm()
+        //click save button
+        cy.contains('Save').click()
         //assert the 5 banks had added to the peer group
-        cy.contains('Search More Banks').next().invoke('text').should('contain', '5 Banks')
+        cy.contains('Save').prev().should('contain', '5 Banks')
+        waitLoading(5000)
 
-        //delete the first bank
-        cy.get('.ag-center-cols-container i.far').first().click()
-        popConfirm()
+        //select the first bank to delete
+        cy.get('.ag-center-cols-container .ag-input-field-input').eq(0).uncheck()
+        //click save button
+        cy.contains('Save').click()
+        waitLoading(5000)
         //assert the first bank had been deleted
-        cy.contains('Search More Banks').next().invoke('text').should('contain', '4 Banks')
+        cy.contains('Save').prev().should('contain', '4 Banks')
 
-        //delete all the banks
-        cy.get('.ag-header-cell-comp-wrapper i.far').click()
-        popConfirm()
+        //delete the other 4 banks
+        cy.get('.ag-center-cols-container .ag-input-field-input').each(($checkbox, index, $list) => {
+            if (index == 0 || index == 1 || index == 2 || index == 3) {
+                cy.wrap($checkbox).uncheck({force: true}) //4 banks will be selected
+            }
+            if (index > 4) {
+                return
+            }
+        })
+        //click save button
+        cy.contains('Save').click()
+        waitLoading(5000)
         //assert all the banks were deleted
-        cy.contains('Search More Banks').next().invoke('text').should('contain', '0 Banks')
+        cy.contains('Save').prev().should('contain', '0 Banks')
 
         //click back icon to return to peer group home page
-        cy.get('img[alt="return.png"]').click()
+        cy.get('img[title="back"]').click()
+        waitLoading(5000)
         //assert the last peer group has 0 bank.
-        cy.get('table.lcentral_bid a').last().should('contain', '0 bank(s)')
+        cy.get('.ag-center-cols-clipper a').last().should('contain', '0 bank(s)')
 
     })
 
     it('upload peer group bank list, download peer group bank report and export bank list', () => {
-        cy.contains('Peer Group*').should('be.visible')
+        cy.contains('Peer Group*', {timeout: 30000}).should('be.visible')
         //select the last peer group link and click to go to select banks page
-        cy.get('table.lcentral_bid a').last().click()
+        cy.get('.ag-center-cols-clipper a').last().click()
         //upload peer group bank list file
-        cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'SamplePeerMemberImportFile.xlsx'))
+        cy.get('div[from="peer"] input[name="file"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'SamplePeerMemberImportFile.xlsx'), {force: true})
         //click upload button
-        cy.get('input.btnHover').click()
+        cy.contains('Upload Peer Group').next().next().next().next().click()
         //assert the uploaded bank list has 5 bank.
-        cy.contains('Search More Banks').next().invoke('text').should('contain', '5 Banks')
+        cy.contains('Save').prev().should('contain', '5 Banks')
 
         //upload peer group bank list file again
-        cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'SamplePeerMemberImportFile.xlsx'))
+        cy.get('div[from="peer"] input[name="file"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'SamplePeerMemberImportFile.xlsx'), {force: true})
         //click upload button
-        cy.get('input.btnHover').click()
+        cy.contains('Upload Peer Group').next().next().next().next().click()
         //assert upload the same bank list will give the tips
         cy.contains('the following memebers were in the peer group already').should('exist')
         //click ok button to close the prompt dialog
         cy.get('button.el-button').click()
 
         //upload peer group bank list file(not recogized) again
-        cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'SamplePeerMemberImportFile_not recogized.xlsx'))
+        cy.get('div[from="peer"] input[name="file"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'SamplePeerMemberImportFile_not recogized.xlsx'), {force: true})
         //click upload button
-        cy.get('input.btnHover').click()
+        cy.contains('Upload Peer Group').next().next().next().next().click()
+        //assert tips
         cy.contains('The following memebers are not recogized').should('exist')
         //click ok button to close the prompt dialog
         cy.get('button.el-button').click()
 
+        /*
         //download peer group report and compare
         cy.contains('Download Peer Group Report').click()
         copyAndCompareExcel()
@@ -147,19 +161,36 @@ describe('Peer Analytics', () => {
         //download peer group bank list and compare
         cy.contains('Export Bank List').click()
         copyAndCompareExcel()
+        */
 
         //delete all the banks back to initial state
-        cy.get('.ag-header-cell-comp-wrapper i.far').click()
+        cy.get('.ag-center-cols-container .ag-input-field-input').eq(0).uncheck()
+        cy.get('.ag-center-cols-container .ag-input-field-input').eq(1).uncheck()
+        cy.get('.ag-center-cols-container .ag-input-field-input').eq(2).uncheck()
+        cy.get('.ag-center-cols-container .ag-input-field-input').eq(3).uncheck()
+        cy.get('.ag-center-cols-container .ag-input-field-input').eq(4).uncheck()
+        //click save button
+        cy.contains('Save').click()
         //assert all the banks were deleted
-        cy.contains('Search More Banks').next().invoke('text').should('contain', '0 Banks')
+        cy.contains('Save').prev().should('contain', '0 Banks')
 
     })
 
     it('add more fields', () => {
         const field_group_name = faker.random.words()
-        cy.contains('Peer Group*').should('be.visible')
-        //select the last peer group link and click to go to select banks page
-        cy.get('table.lcentral_bid a').last().click()
+        cy.contains('Peer Group*', {timeout: 30000}).should('be.visible')
+        //click Create/Select Report tab
+        cy.contains('Create/Select Report').click()
+        waitLoading(30000)
+        //select peer group
+        cy.get('i.el-select__caret').eq(2).click()
+        cy.contains('autotest_download_peer_not_delete').click()
+        // Download Current View report
+        cy.contains('Download Current View').click()
+        copyAndCompareExcel()
+        //Download Peer Group Report
+        cy.contains('Download Peer Group Report').click()
+        copyAndCompareExcel()
         //click Add More Fields link
         cy.contains('Add More Fields').click()
         waitLoading(60000)
