@@ -25,7 +25,7 @@ describe('Trade Simulation', () => {
         })
         cy.get('.ag-center-cols-container', {timeout: 60000}).should('be.visible')
         // check treasury header checkbox 
-        cy.get('div.ag-pivot-off input').eq(0).check() //9 item
+        cy.get('.header-checkbox').click() //9 item
         // click add button
         cy.contains('Add').click()
         cy.wait(2000)
@@ -35,7 +35,7 @@ describe('Trade Simulation', () => {
         cy.contains('Retail CD 5yr', {timeout: 60000}).should('be.visible')
         //cy.get('.ag-center-cols-viewport', {timeout: 10000}).should('be.visible')
         // check Brokered Deposits header checkbox 
-        cy.get('div.capital-market input').eq(0).check({force: true}) //21 item
+        cy.get('.header-checkbox').click() //21 item
         // click add button
         cy.contains('Add').click()
         // click simulate button
