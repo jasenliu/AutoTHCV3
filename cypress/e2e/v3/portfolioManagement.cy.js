@@ -44,7 +44,7 @@ describe('Portfolio Management', () => {
         })
     })
 
-    it.only('Portfolio Management -> generate report/delete', () => {
+    it('Portfolio Management -> generate report/delete', () => {
         //click Generate Report tab
         cy.contains('Generate Report').click()
         //click select Portfolio icon
