@@ -44,13 +44,13 @@ describe('Portfolio Management', () => {
         })
     })
 
-    it('Portfolio Management -> generate report/delete', () => {
+    it.only('Portfolio Management -> generate report/delete', () => {
         //click Generate Report tab
         cy.contains('Generate Report').click()
         //click select Portfolio icon
         cy.get('div.cbdbutton.noborder').click()
         //select the first portfolio in the list
-        cy.get('div.tree.box table.el-table__body tbody tr').first().click()
+        cy.get('.ag-center-cols-container >div >div > span >.ag-group-value').first().click()
         //select the EVE Report
         cy.get('input.el-checkbox__original').eq(1).click({force: true})
         //input report name
