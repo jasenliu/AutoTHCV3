@@ -885,6 +885,33 @@ describe('smart tool', () => {
 
     copyAndCompareExcel()
   })
+
+  it('TLINK1554', () => {
+    // select bank:DRAKE BANK
+    selectBankByNameAndABA('DRAKE BANK', '96017230')
+
+    //select cycle:202308
+    selectBankCycle('Aug 2023')
+
+    //open smart tool page in current page(not open the new page)
+    //cy.contains('Smart Pathbook Tool').invoke('removeAttr', '_blank').click()
+    openSmartToolPageInCurrentPage()
+    
+    //click root node
+    //cy.visit('https://thcdecisions.cn/tlink/external/smartpathfiletool')
+    cy.get('#id0').click()
+    cy.wait(3000)
+
+    //Cash & Short Term node
+    cy.get('#id199').click({ force:true })
+    //cy.wait(5000)
+    waitLoading(180000)
+    cy.get('[value="next2"]', {timeout: 20000}).click({ force: true });
+    waitLoading(180000)
+    cy.get('table[name="tbloan"]').contains('advanced setting').click()
+    cy.get('.mapping-tbl tbody tr').eq(3).find('td').eq(2).find('input[type="text"]').invoke('val').should('contain', 'Cash Items')
+    
+  })
     
 
 })
