@@ -48,7 +48,7 @@ describe('Income Simulation', () => {
         //click New Fund/Portfolio button
         cy.contains('New Fund/Portfolio').click()
         //upload data file
-        cy.get('input.ui-input-file').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'Path-sample-ALIS.xlsx'), {force: true})
+        cy.get('input[name="txtUpload"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'Path-sample-ALIS.xlsx'), {force: true})
         //input FundName
         cy.get('input[name="FundName"]').type('income simulation test', {force: true})
         //click create button

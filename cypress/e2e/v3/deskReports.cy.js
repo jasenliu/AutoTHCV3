@@ -57,7 +57,7 @@ describe('Desk Reports', () => {
 
         waitLoading(10000)
         // upload loan file
-        cy.get('input[name="loanFile"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'PATH-sample-Whole_Loan_file_min.xlsx'), {force: true})
+        cy.get('input[name="txtUpload"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'PATH-sample-Whole_Loan_file_min.xlsx'), {force: true})
         // click Generate Reports button
         cy.get('input[value="Generate Reports"]').click()
         waitLoading(20000)
@@ -110,7 +110,7 @@ describe('Desk Reports', () => {
         // check Evaluation Date radio button
         cy.get('input[value="EvaluationDate"]').check()
         // upload loan file
-        cy.get('input[name="loanFile"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'PATH-sample-Whole_Loan_file_min.xlsx'), {force: true})
+        cy.get('input[name="txtUpload"]').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'PATH-sample-Whole_Loan_file_min.xlsx'), {force: true})
         // click Generate Reports button
         cy.get('input[value="Generate Reports"]').click()
         waitLoading(20000)
