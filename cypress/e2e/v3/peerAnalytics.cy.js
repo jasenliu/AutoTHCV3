@@ -15,7 +15,7 @@ describe('Peer Analytics', () => {
         clickLinkByName('Performance Insights') 
         cy.get('span[title="Performance Insights"]').eq(1).click() 
         // click Peer Analytics tab
-        cy.contains('Peer Analytics').click()
+        cy.get('.thc-page-tab-container').contains('Peer Analytics').click()
         cy.wait(2000)
     })
 
@@ -265,15 +265,16 @@ describe('Peer Analytics', () => {
         //click apply button
         cy.get('input[value="Apply"]').click()
         //assert apply success message is displayed
-        cy.contains('Add to Peer Group Successfully!').invoke('text').should('eql', 'Add to Peer Group Successfully!')
+        cy.contains('Add to Peer Group Successfully!', {timeout: 30000}).invoke('text').should('eql', 'Add to Peer Group Successfully!')
         //assert 'ACCT_001', 'ACCT_002' show in the page
         cy.contains('ACCT_001').invoke('text').should('eql', 'ACCT_001')
         cy.contains('ACCT_002').invoke('text').should('eql', 'ACCT_002')
-        cy.wait(2000)
+        waitLoading(20000)
 
         //*back to initial state*
         //click Add More Fields link
         cy.contains('Add More Fields').click({force: true})
+        waitLoading(60000)
         cy.get('#SelectdFields').select(['ACCT_001', 'ACCT_002'])
         //put added fields to unselected fields box
         cy.get('i.fa-arrow-left').click()
