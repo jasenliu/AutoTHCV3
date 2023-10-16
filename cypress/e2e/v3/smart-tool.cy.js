@@ -910,6 +910,45 @@ describe('smart tool', () => {
     waitLoading(180000)
     cy.get('table[name="tbloan"]').contains('advanced setting').click()
     cy.get('.mapping-tbl tbody tr').eq(3).find('td').eq(2).find('input[type="text"]').invoke('val').should('contain', 'Cash Items')
+
+    //E038 BUG(check Add Advanced Setting,should show advanced setting link, uncheck Add Advanced Setting should not show it)
+    // MSR node
+    cy.get('#id107').click({force: true})
+    waitLoading(180000)
+    // click next button
+    cy.get('[value="next2"]', {timeout: 20000}).click({ force: true });
+    waitLoading(180000)
+    // click Add More THC Fields link
+    cy.contains('Add More THC Fields').click()
+    // click thc field 
+    cy.get('.el-input__inner').eq(0).click()
+    // input e038
+    cy.get('.el-input__inner').eq(0).type('e038')
+    // select E038(P&I Reserve)
+    cy.get('.el-select-dropdown__wrap').eq(1).contains('E038(P&I Reserve)').click()
+    // uncheck 'Add Advanced Settings'
+    cy.contains('Add Advanced Settings').find('input').uncheck()
+    // click save button
+    cy.get('.buttonBar').click()
+    cy.contains('E038').parent().find('a').should('not.exist')
+    // delete E038
+    cy.get('i[title="Delete"]').click()
+
+    // click Add More THC Fields link
+    cy.contains('Add More THC Fields').click()
+    // click thc field 
+    cy.get('.el-input__inner').eq(0).click()
+    // input e038
+    cy.get('.el-input__inner').eq(0).type('e038')
+    // select E038(P&I Reserve)
+    cy.get('.el-select-dropdown__wrap').eq(1).contains('E038(P&I Reserve)').click()
+    // check 'Add Advanced Settings'
+    cy.contains('Add Advanced Settings').find('input').check()
+    // click save button
+    cy.get('.buttonBar').click()
+    cy.contains('E038').parent().find('a').should('exist')
+    // delete E038
+    cy.get('i[title="Delete"]').click()
     
   })
     
