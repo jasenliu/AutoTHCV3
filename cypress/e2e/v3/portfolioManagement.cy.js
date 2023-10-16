@@ -1,4 +1,4 @@
-import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, copyAndCompareExcel } from "./utils"
+import { login, clickLinkByName, selectBankByNameAndABA, selectBankCycle, copyAndCompareExcelByGivenFile, waitLoading } from "./utils"
 const path = require('path')
 const { faker } = require("@faker-js/faker")
 
@@ -16,7 +16,7 @@ describe('Portfolio Management', () => {
         cy.wait(1000)
     })
 
-    it('Portfolio Management -> upload portfolio/delete', () => {
+    it.only('Portfolio Management -> upload portfolio/delete', () => {
         //click Upload Portfolio button
         cy.contains('Upload Portfolio').click()
         //click cancel button
@@ -32,12 +32,18 @@ describe('Portfolio Management', () => {
         cy.get('input[value="Upload"]').click()
         //assert path file uploaded successfully 
         cy.contains('Upload Successfully.').should('exist')
+        // click refresh icon
+        cy.get('.el-icon-refresh-right').click()
+        waitLoading(5000)
         //assert path file build successfully 
-        cy.contains(portfolio_name).parents('td').next().next().next().next().find('img[title="Download excel file"]', {timeout: 10000}).should('exist')
+        cy.contains(portfolio_name).parent().parent().next().next().next().next().next().find('img[title="Download excel file"]', {timeout: 10000}).click()
+        copyAndCompareExcelByGivenFile('portfolio_management_Pathfile')
 
         //delete portfolio
-        cy.contains(portfolio_name).parents('td').prev().find('input[type="checkbox"]').check({force: true})
-        cy.contains('Delete').click({force: true})
+        //select the frist checkbox
+        cy.get('.ag-pinned-left-cols-container >div >div >input').eq(0).check()
+        // click delete icon
+        cy.get('.fa-trash-alt').click()
         cy.on('window:alert', (text) => {
             //assert delete message
             expect(text).to.be.eq('Are you sure you want to delete these Items?')
