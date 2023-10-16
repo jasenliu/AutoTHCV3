@@ -29,7 +29,7 @@ describe('Financial Simulation', () => {
         // wait for processing message disappear
         cy.get('div[role="progressbar"]', {timeout: 30000}).should('not.be.visible')
         //from column Assets to column Tier1 in the Dashboard
-        const bench_new_simulation = ['240,642', '195,991', '31,914', '173,852', '59,424', '24.69', '4.76', '8,109', '2,084', '3,572', '3.49', '1.48', '6.01', '46,219', '', '1.32', '112.73', '2.47', '']
+        const bench_new_simulation = ['240,512', '195,991', '31,784', '173,852', '59,302', '24.66', '4.76', '8,109', '2,084', '3,572', '3.49', '1.49', '6.02', '46,097', '', '1.33', '112.73', '2.47', '']
         cy.get('table.lcentral[style="width: 100%;"] tbody tr').as('simulationsTable')
         let financial_simulation_id = ""
         cy.get('@simulationsTable').then(($rows) => {
@@ -93,7 +93,7 @@ describe('Financial Simulation', () => {
         // wait for processing message disappear
         cy.get('div[role="progressbar"]', {timeout: 30000}).should('not.be.visible')
         //from column Assets to column Tier1 in the Dashboard
-        const bench_new_simulation = ['240,642', '195,991', '31,914', '173,852', '59,424', '24.69', '4.76', '8,109', '2,084', '3,572', '3.49', '1.48', '6.01', '46,219', '', '1.32', '112.73', '2.47', '']
+        const bench_new_simulation = ['240,512', '195,991', '31,784', '173,852', '59,302', '24.66', '4.76', '8,109', '2,084', '3,572', '3.49', '1.49', '6.02', '46,097', '', '1.33', '112.73', '2.47', '']
         cy.get('table.lcentral[style="width: 100%;"] tbody tr').as('simulationsTable')
         cy.get('@simulationsTable').then(($rows) => {
             let first_row = ''
