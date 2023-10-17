@@ -72,7 +72,7 @@ describe('Strategy Manager', () => {
             cy.get('input[value="Save"]').click()
             waitLoading(20000)
             // assert update success info
-            cy.contains('The strategy updated to the Trade Simulation dashbord').should('exist')
+            cy.contains('The strategy updated to the Trade Simulation dashboard.').should('exist')
             // click OK button
             cy.get('.el-button').click()
 
