@@ -221,7 +221,7 @@ module.exports = defineConfig({
     v3_com_username: process.env.V3_COM_USERNAME,
     v3_com_password: process.env.V3_COM_PASSWORD,
     v3_com_baseUrl: 'https://thcdecisions.com',
-    isCnSite: true,
+    isCnSite: false,
 
     v2_daily_username: process.env.V2_DAILY_USERNAME,
     v2_daily_password: process.env.V2_DAILY_PASSWORD,
