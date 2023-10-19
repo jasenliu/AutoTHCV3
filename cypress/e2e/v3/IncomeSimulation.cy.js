@@ -71,6 +71,7 @@ describe('Income Simulation', () => {
         cy.contains('Analyze & Download').click({force: true}) // if the report not finished this line will fail
         copyAndCompareExcel()
 
+        /* dev delete this feature
         //upload data file and click analyze button directly
         //upload data file
         cy.get('#pathFileData').selectFile(path.join(Cypress.config('fixturesFolder'), 'data', 'Path-sample-ALIS.xlsx'), {force: true})
@@ -82,6 +83,7 @@ describe('Income Simulation', () => {
         cy.contains('Portfolio calculation is in processing...').should('exist')
         //waiting to download simulation report and compare
         checkReport(beginTime)
+        */
 
     })
 
