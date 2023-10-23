@@ -28,7 +28,7 @@ describe('Strategy Manager', () => {
         // check treasury header checkbox 
         cy.get('.header-checkbox').click()
         // click add button
-        cy.contains('Add').click()
+        cy.contains('Choose Sources').next().click()
         // select sell basket
         // click Brokered Deposits tab
         cy.contains('Brokered Deposits').click()
@@ -37,7 +37,7 @@ describe('Strategy Manager', () => {
         // check Brokered Deposits header checkbox 
         cy.get('.header-checkbox').click()
         // click add button
-        cy.contains('Add').click()
+        cy.contains('Choose Sources').next().click()
         // click create button
         cy.get('input[value="Create"]').click()
         waitLoading(10000)
@@ -95,7 +95,55 @@ describe('Strategy Manager', () => {
                 // delete the save as strategy
                 cy.get('.el-icon-delete').first().click()
                 // delete the init create strategy
-                cy.get('.el-icon-delete').first().click()
+                //cy.get('.el-icon-delete').first().click()
+
+                // click the first share icon
+                cy.get('i[title="Share the strategy"]').first().click()
+                // click the institutions link
+                cy.contains('0 institutions;').click()
+                // input bank name
+                cy.contains('Bank Name:').next().type('qtest')
+                // click search button
+                cy.get('input[value="Invite"]').prev().click()
+                // check select all
+                cy.get('#chball_ALMClient_all').check()
+                // click ok button
+                cy.get('input[name="invited"]').parent().next().click()
+                // assert 0 institution
+                cy.contains('0 institutions;').should('exist')
+
+                // click the institutions link
+                cy.contains('0 institutions;').click()
+                // input bank name
+                cy.contains('Bank Name:').next().type('qtest')
+                // click search button
+                cy.get('input[value="Invite"]').prev().click()
+                // check select all
+                cy.get('#chball_ALMClient_all').check()
+                // click invite button
+                cy.get('input[value="Invite"]').click()
+                // click ok button
+                cy.get('input[name="invited"]').parent().next().click()
+                // assert 5 institutions
+                cy.contains('5 institutions;').should('exist')
+                // click the institutions link
+                cy.contains('5 institutions;').click()
+                cy.get('input[name="invited"]').check()
+                // assert invited banks
+                cy.get('[style="max-height: 380px; overflow: auto;"] ul li').should(($lis) => {
+                    expect($lis).to.have.length(5)
+                    expect($lis.eq(0)).to.contain('QTestBank1')
+                    expect($lis.eq(1)).to.contain('QTestBank2')
+                    expect($lis.eq(2)).to.contain('QTestBank3')
+                    expect($lis.eq(3)).to.contain('QTestBank4')
+                    expect($lis.eq(4)).to.contain('QTestBank5')
+                })
+                // click ok button
+                cy.get('input[name="invited"]').parent().next().click()
+                // click share button
+                cy.get('input[value="Share"]').click()
+                // assert success info
+                cy.contains('Share Successfully.').invoke('text').should('eql', 'Share Successfully.')
             })
 
             // Upload Expert Strategy File 
