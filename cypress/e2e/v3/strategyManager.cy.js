@@ -144,6 +144,20 @@ describe('Strategy Manager', () => {
                 cy.get('input[value="Share"]').click()
                 // assert success info
                 cy.contains('Share Successfully.').invoke('text').should('eql', 'Share Successfully.')
+
+                // click the first reports icon
+                cy.get('i[title="Reports"]').first().click()
+                // click BOND SWAP REPORT part generate button
+                cy.get('.btnHover').eq(0).click()
+                // assert success info
+                cy.contains('Generate Successfully.').should('exist')
+                // click INCOME ATTRIBUTION REPORT part generate button
+                cy.get('.btnHover').eq(1).click()
+                // assert success info
+                cy.contains('Generate Successfully.').should('exist')
+                cy.contains('Calculating...', {timeout: 60000}).should('exist')
+                // click back icon
+                cy.get('img[alt="return"]').click()
             })
 
             // Upload Expert Strategy File 
