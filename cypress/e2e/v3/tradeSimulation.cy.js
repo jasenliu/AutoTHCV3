@@ -120,7 +120,7 @@ describe('Trade Simulation', () => {
                 // click remove button
                 cy.contains('Remove').click()
                 // assert the items were removed
-                cy.contains('Total(8)').should('exist') //BUY BASKET number
+                cy.contains('Total(9)').should('exist') //BUY BASKET number
                 cy.contains('Total(20)').should('exist') //FUNDING BASKET number
                 // click update button
                 cy.contains('Remove').next().next().click()

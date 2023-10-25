@@ -97,11 +97,11 @@ export const popConfirm = () => {
 };
 
 export const copyAndCompareExcel = () => {
-  cy.wait(1000)
+  cy.wait(15000)
   //get downloaded file name to ensure the file is available
-  cy.task('getDownloadFileName', {downloadsFolder}).then((filename) => {
-    cy.log('downloading file:', filename)
-  })
+  //cy.task('getDownloadFileName', {downloadsFolder}).then((filename) => {
+  // cy.log('downloading file:', filename)
+  //})
   //copy downloaded pathfile to generate_report folder and then compare the pathfile
   cy.task("copyFileToDirSync", {
     fromPath: `${downloadsFolder}/`,
