@@ -92,12 +92,11 @@ describe('Strategy Manager', () => {
             // assert strategId exists in the page
             cy.contains(strategId).should('exist')
         })
+        waitLoading(30000)
         // assert desc exists in the page
         cy.contains(fakerDesc).should('exist')
         // delete the save as strategy
         cy.get('.el-icon-delete').first().click()
-        // delete the init create strategy
-        //cy.get('.el-icon-delete').first().click()
 
         // click the first share icon
         cy.get('i[title="Share the strategy"]').first().click()
@@ -147,6 +146,25 @@ describe('Strategy Manager', () => {
         // assert success info
         cy.contains('Share Successfully.').invoke('text').should('eql', 'Share Successfully.')
 
+        // scroll to right
+        cy.get('.ag-body-horizontal-scroll-viewport').scrollTo('bottomRight')
+        // click the first "Create Bank Simulation" link
+        cy.contains('Create Bank Simulation').click()
+        waitLoading(5000)
+        // input bank name
+        cy.get('input[name="Bank Name"]').type('qtest')
+        // click search button
+        cy.get('.btn-group').find('button').click()
+        // check qtestbank1
+        cy.contains('QTestBank1').parent().parent().parent().prev().find('input').check()
+        // click Send to Trade Simulation button
+        cy.get('input[value="Send to Trade Simulation"]').click()
+        waitLoading(15000)
+        waitLoading(15000)
+        // click ok button
+        cy.get('.thc-popconfirm').find('button').eq(1).click()
+        waitLoading(15000)
+
         // click the first reports icon
         cy.get('i[title="Reports"]').first().click()
         // click BOND SWAP REPORT part generate button
@@ -160,6 +178,9 @@ describe('Strategy Manager', () => {
         cy.contains('Calculating...', {timeout: 60000}).should('exist')
         // click back icon
         cy.get('img[alt="return"]').click()
+        waitLoading(5000)
+        // delete the init create strategy
+        cy.get('.el-icon-delete').first().click()
 
         // Upload Expert Strategy File 
         // click Create New Expert Strategy button
