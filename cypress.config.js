@@ -1,4 +1,5 @@
 const { defineConfig } = require("cypress");
+const { beforeRunHook, afterRunHook } = require('cypress-mochawesome-reporter/lib');
 
 const fs = require('fs')
 const path = require('path')
@@ -40,14 +41,21 @@ function getCurrentTime() {
 
 module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter',
+  reporterOptions: {
+    charts: true,
+    embeddedScreenshots: true,
+    ignoreVideos: true,
+    inlineAssets: true,
+  },
   e2e: {
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
+      /*
       require('cypress-email-results')(on, config, {
         email: ['jsliu@thc.net.cn'],
         transport
-      })
-
+      });
+      */
       on('task', {
           copyFileToDir({ fromPath, toPath }) {
             const currentTime = getCurrentTime()
@@ -175,6 +183,7 @@ module.exports = defineConfig({
                                   isDiff = true
                                   genCell.value(`expected:${cell.value()}, actual:${genCell.value()}`)
                                   genCell.style("fontColor", "ff0000")
+                                  console.log(`row:${row.rowNumber()}, col:${cell.columnNumber()}`)
                                   console.log(genCell.value())
                               }
                           })

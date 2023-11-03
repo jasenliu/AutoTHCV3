@@ -36,7 +36,7 @@ describe('Portfolio Management', () => {
         cy.get('.el-icon-refresh-right').click()
         waitLoading(5000)
         //assert path file build successfully 
-        cy.contains(portfolio_name).parent().parent().next().next().next().next().next().find('img[title="Download excel file"]', {timeout: 10000}).click()
+        cy.contains(portfolio_name).parent().parent().next().next().next().next().next().next().find('img[title="Download excel file"]', {timeout: 10000}).click()
         copyAndCompareExcelByGivenFile('portfolio_management_Pathfile')
 
         //delete portfolio

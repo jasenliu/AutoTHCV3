@@ -886,7 +886,7 @@ describe('smart tool', () => {
     copyAndCompareExcel()
   })
 
-  it('TLINK1554', () => {
+  it.only('TLINK1554', () => {
     // select bank:DRAKE BANK
     selectBankByNameAndABA('DRAKE BANK', '96017230')
 
@@ -921,11 +921,11 @@ describe('smart tool', () => {
     // click Add More THC Fields link
     cy.contains('Add More THC Fields').click()
     // click thc field 
-    cy.get('.el-input__inner').eq(0).click()
+    cy.get('.el-input__inner').eq(1).click()
     // input e038
-    cy.get('.el-input__inner').eq(0).type('e038')
+    cy.get('.el-input__inner').eq(1).type('e038')
     // select E038(P&I Reserve)
-    cy.get('.el-select-dropdown__wrap').eq(1).contains('E038(P&I Reserve)').click()
+    cy.get('.el-select-dropdown__wrap').eq(2).contains('E038(P&I Reserve)').click()
     // uncheck 'Add Advanced Settings'
     cy.contains('Add Advanced Settings').find('input').uncheck()
     // click save button
@@ -937,11 +937,11 @@ describe('smart tool', () => {
     // click Add More THC Fields link
     cy.contains('Add More THC Fields').click()
     // click thc field 
-    cy.get('.el-input__inner').eq(0).click()
+    cy.get('.el-input__inner').eq(1).click()
     // input e038
-    cy.get('.el-input__inner').eq(0).type('e038')
+    cy.get('.el-input__inner').eq(1).type('e038')
     // select E038(P&I Reserve)
-    cy.get('.el-select-dropdown__wrap').eq(1).contains('E038(P&I Reserve)').click()
+    cy.get('.el-select-dropdown__wrap').eq(2).contains('E038(P&I Reserve)').click()
     // check 'Add Advanced Settings'
     cy.contains('Add Advanced Settings').find('input').check()
     // click save button
